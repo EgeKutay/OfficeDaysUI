@@ -1,0 +1,10 @@
+{
+    "AuthApi":{
+            "baseAdress":"https://sf.eldor.com.tr/AuthService",
+        
+            "loginEndPoint":"https://sf.eldor.com.tr/AuthService/api/Auth/v3/Login",
+            "loginViaRefreshTokenEndPoint":"https://sf.eldor.com.tr/AuthService/api/Auth/LoginWithRefreshToken"
+
+
+    }
+}
