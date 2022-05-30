@@ -45,7 +45,7 @@
 
         <!-- Column: Name -->
         <span
-          v-if="props.column.field === 'Name'"
+          v-if="props.column.field === 'ame'"
           class="text-nowrap"
         >
           <b-avatar
@@ -282,8 +282,6 @@ let replicateDays=dummydata["days"]
           Object.keys(employeeObj)[k].toLowerCase() ===emp.nwdays[j].toLowerCase()
         ) {
           employeeObj[`${Object.keys(employeeObj)[k]}`] = "NW";
-        } else if (employeeObj[`${Object.keys(employeeObj)[k]}`] == "emp") {
-          employeeObj[`${Object.keys(employeeObj)[k]}`] = "SW";
         }
       }
     }
