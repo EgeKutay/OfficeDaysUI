@@ -6,7 +6,7 @@
       <b-link class="brand-logo">
         <vuexy-logo />
         <h2 class="brand-text text-primary ml-1">
-          Vuexy
+          ODM
         </h2>
       </b-link>
       <!-- /Brand logo-->
@@ -41,10 +41,10 @@
             title-tag="h2"
             class="font-weight-bold mb-1"
           >
-            Welcome to Vuexy! 👋
+            Welcome to Office Days Manager! 👋
           </b-card-title>
           <b-card-text class="mb-2">
-            Please sign-in to your account and start the adventure
+            
           </b-card-text>
 
           <!-- form -->
@@ -55,20 +55,20 @@
             >
               <!-- email -->
               <b-form-group
-                label="Email"
-                label-for="login-email"
+                label="Username"
+                label-for="login-username"
               >
                 <validation-provider
                   #default="{ errors }"
-                  name="Email"
-                  rules="required|email"
+                  name="User Name"
+                  rules="required|min: 3"
                 >
                   <b-form-input
-                    id="login-email"
+                    id="login-username"
                     v-model="userName"
                     :state="errors.length > 0 ? false:null"
-                    name="login-email"
-                    placeholder="john@example.com"
+                    name="login-username"
+                    placeholder="johndoe"
                   />
                   <small class="text-danger">{{ errors[0] }}</small>
                 </validation-provider>
@@ -111,15 +111,7 @@
               </b-form-group>
 
               <!-- checkbox -->
-              <b-form-group>
-                <b-form-checkbox
-                  id="remember-me"
-                  v-model="status"
-                  name="checkbox-1"
-                >
-                  Remember Me
-                </b-form-checkbox>
-              </b-form-group>
+        
 
               <!-- submit buttons -->
               <b-button
@@ -165,7 +157,8 @@ import AuthStore from "@/store/api-services/auth.module"
 import {
   BRow, BCol, BLink, BFormGroup, BFormInput, BInputGroupAppend, BInputGroup, BFormCheckbox, BCardText, BCardTitle, BImg, BForm, BButton,
 } from 'bootstrap-vue'
-import { required, email } from '@validations'
+import { required, email,min } from '@validations'
+
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
 import store from '@/store/index'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
@@ -199,6 +192,7 @@ export default {
       // validation rulesimport store from '@/store/index'
       required,
       email,
+    min
     }
   },
   computed: {
@@ -217,23 +211,46 @@ export default {
   methods: {
     validationForm() {
       this.$refs.loginValidation.validate().then(response => {
-       this.$store.dispatch('login',{username:this.userName,password:this.password}).then(loginResponse=>{
-         this.$router.replace({name:"home"})
-          //this.$router.go('home')
-       })
-
-/*
+        console.log(response)
         if (response) {
           this.$toast({
             component: ToastificationContent,
             props: {
-              title: 'Form Submitted',
+              title: 'Logging in...',
               icon: 'EditIcon',
               variant: 'success',
             },
           })
         }
-        */
+       this.$store.dispatch('login',{username:this.userName,password:this.password}).then(loginResponse=>{
+         console.log(loginResponse)
+         if(loginResponse){
+           this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Login Success!',
+              icon: 'EditIcon',
+              variant: 'success',
+            },
+          });
+       }
+         this.$router.replace({name:"home"})
+       },(rejection)=>{
+       
+           this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Failed to logging in unauthorized user!',
+              icon: 'EditIcon',
+              variant: 'danger',
+            },
+          });
+         
+       })
+     
+
+
+
       })
     },
   },

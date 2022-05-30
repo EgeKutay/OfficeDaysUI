@@ -16,13 +16,16 @@ const getters={
 const actions={
 async login(context,data){
   let response
+  try{
     context.commit('getLoginData', response=await useJwt.login(data))
     return response
   }
-
+  catch(err){
+  return Promise.reject(new Error(400))
   }
   
-
+}
+}
 const mutations={
   getLoginData(state,response){
     state.user=JSON.parse(JSON.stringify(response))

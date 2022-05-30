@@ -9,10 +9,15 @@ export default [
         icon: 'HomeIcon',
       },
       {
-        title: 'Second Page',
-        route: 'second-page',
-        icon: 'FileIcon',
+        title: 'Admin Panel',
+        route: 'admin-panel',
+        icon: 'UserIcon',
       },
+      {
+        title: 'Admin Panel',
+        route: 'admin-panel',
+        icon: 'UserIcon',
+      }
     ],
   },
 ]

@@ -9,4 +9,9 @@ export default [
     route: 'second-page',
     icon: 'FileIcon',
   },
+  {
+    title: 'Admin Panel',
+    route: 'admin-panel',
+    icon: 'UserIcon',
+  }
 ]
