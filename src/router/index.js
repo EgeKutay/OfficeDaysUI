@@ -52,6 +52,20 @@ const router = new VueRouter({
         layout: 'full',
       },
     },
+     {//ADMINPANEL MAIN COMPONENT
+      path: '/admin-panel',
+      name: 'admin-panel',
+      component: () => import('@/views/adminpanel/AdminPanel.vue'),
+      meta: {
+        pageTitle: 'Admin Panel',
+        breadcrumb: [
+          {
+            text: 'Admin Panel',
+            active: true,
+          },
+        ],
+      },
+    },
     {
       path: '/error-404',
       name: 'error-404',
@@ -79,11 +93,11 @@ const router = new VueRouter({
 // Remove afterEach hook if you are not using splash screen
 router.beforeEach((to, _, next) => {
 
-  console.log(to.path)
+ 
   const isLoggedIn = isUserLoggedIn()
   if(to.path!=="/login"&&!isLoggedIn){
  
-  console.log(isLoggedIn)
+
 
  
   if (!canNavigate(to)) {
@@ -101,13 +115,9 @@ router.beforeEach((to, _, next) => {
   }
 
 }
-
-
   return next()
-  
-
 })
-console.log("Helloworld")
+
 router.afterEach(() => {
   // Remove initial loading
   const appLoading = document.getElementById('loading-bg')

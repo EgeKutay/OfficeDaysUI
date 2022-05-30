@@ -6,7 +6,11 @@
       <b-link class="brand-logo">
         <vuexy-logo />
         <h2 class="brand-text text-primary ml-1">
+<<<<<<< HEAD
           Vuexy
+=======
+          ODM
+>>>>>>> 55421705b1bfa5c00688e196148f340b3c8e42e8
         </h2>
       </b-link>
       <!-- /Brand logo-->
@@ -41,10 +45,17 @@
             title-tag="h2"
             class="font-weight-bold mb-1"
           >
+<<<<<<< HEAD
             Welcome to Vuexy! 👋
           </b-card-title>
           <b-card-text class="mb-2">
             Please sign-in to your account and start the adventure
+=======
+            Welcome to Office Days Manager! 👋
+          </b-card-title>
+          <b-card-text class="mb-2">
+            
+>>>>>>> 55421705b1bfa5c00688e196148f340b3c8e42e8
           </b-card-text>
 
           <!-- form -->
@@ -55,6 +66,7 @@
             >
               <!-- email -->
               <b-form-group
+<<<<<<< HEAD
                 label="Email"
                 label-for="login-email"
               >
@@ -69,6 +81,22 @@
                     :state="errors.length > 0 ? false:null"
                     name="login-email"
                     placeholder="john@example.com"
+=======
+                label="Username"
+                label-for="login-username"
+              >
+                <validation-provider
+                  #default="{ errors }"
+                  name="User Name"
+                  rules="required|min: 3"
+                >
+                  <b-form-input
+                    id="login-username"
+                    v-model="userName"
+                    :state="errors.length > 0 ? false:null"
+                    name="login-username"
+                    placeholder="johndoe"
+>>>>>>> 55421705b1bfa5c00688e196148f340b3c8e42e8
                   />
                   <small class="text-danger">{{ errors[0] }}</small>
                 </validation-provider>
@@ -111,6 +139,7 @@
               </b-form-group>
 
               <!-- checkbox -->
+<<<<<<< HEAD
               <b-form-group>
                 <b-form-checkbox
                   id="remember-me"
@@ -120,6 +149,9 @@
                   Remember Me
                 </b-form-checkbox>
               </b-form-group>
+=======
+        
+>>>>>>> 55421705b1bfa5c00688e196148f340b3c8e42e8
 
               <!-- submit buttons -->
               <b-button
@@ -165,7 +197,12 @@ import AuthStore from "@/store/api-services/auth.module"
 import {
   BRow, BCol, BLink, BFormGroup, BFormInput, BInputGroupAppend, BInputGroup, BFormCheckbox, BCardText, BCardTitle, BImg, BForm, BButton,
 } from 'bootstrap-vue'
+<<<<<<< HEAD
 import { required, email } from '@validations'
+=======
+import { required, email,min } from '@validations'
+
+>>>>>>> 55421705b1bfa5c00688e196148f340b3c8e42e8
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
 import store from '@/store/index'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
@@ -199,6 +236,10 @@ export default {
       // validation rulesimport store from '@/store/index'
       required,
       email,
+<<<<<<< HEAD
+=======
+    min
+>>>>>>> 55421705b1bfa5c00688e196148f340b3c8e42e8
     }
   },
   computed: {
@@ -217,23 +258,63 @@ export default {
   methods: {
     validationForm() {
       this.$refs.loginValidation.validate().then(response => {
+<<<<<<< HEAD
        this.$store.dispatch('login',{username:this.userName,password:this.password}).then(loginResponse=>{
          this.$router.replace({name:"home"})
           //this.$router.go('home')
        })
 
 /*
+=======
+        console.log(response)
+>>>>>>> 55421705b1bfa5c00688e196148f340b3c8e42e8
         if (response) {
           this.$toast({
             component: ToastificationContent,
             props: {
+<<<<<<< HEAD
               title: 'Form Submitted',
+=======
+              title: 'Logging in...',
+>>>>>>> 55421705b1bfa5c00688e196148f340b3c8e42e8
               icon: 'EditIcon',
               variant: 'success',
             },
           })
         }
+<<<<<<< HEAD
         */
+=======
+       this.$store.dispatch('login',{username:this.userName,password:this.password}).then(loginResponse=>{
+         console.log(loginResponse)
+         if(loginResponse){
+           this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Login Success!',
+              icon: 'EditIcon',
+              variant: 'success',
+            },
+          });
+       }
+         this.$router.replace({name:"home"})
+       },(rejection)=>{
+       
+           this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Failed to logging in unauthorized user!',
+              icon: 'EditIcon',
+              variant: 'danger',
+            },
+          });
+         
+       })
+     
+
+
+
+>>>>>>> 55421705b1bfa5c00688e196148f340b3c8e42e8
       })
     },
   },

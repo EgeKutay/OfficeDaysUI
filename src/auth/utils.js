@@ -7,7 +7,7 @@ import useJwt from '@/auth/jwt/useJwt'
  */
 // eslint-disable-next-line arrow-body-style
 export const isUserLoggedIn = () => {
-  console.log(localStorage.getItem(useJwt.jwtConfig.storageRefreshTokenKeyName))
+ 
   if(localStorage.getItem(useJwt.jwtConfig.storageTokenKeyName)||localStorage.getItem(useJwt.jwtConfig.storageRefreshTokenKeyName)){
     return true
   }

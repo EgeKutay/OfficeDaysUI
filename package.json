@@ -1,5 +1,5 @@
 {
-  "name": "ossalginciadminpanel",
+  "name": "officedaysui",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -85,12 +85,17 @@
   "main": ".eslintrc.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EgeKutay/OSAdminPanel.git"
+    "url": "git+https://github.com/EgeKutay/OfficeDaysUI"
   },
   "author": "egekyurusen@gmail.com",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/EgeKutay/OSAdminPanel/issues"
+    "url": "https://github.com/EgeKutay/OfficeDaysUI/issues"
   },
-  "homepage": "https://github.com/EgeKutay/OSAdminPanel#readme"
+  "homepage": "https://github.com/EgeKutay/OfficeDaysUI#readme",
+  "keywords": [
+    "office",
+    "days",
+    "ui"
+  ]
 }
