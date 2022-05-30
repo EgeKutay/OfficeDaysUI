@@ -1,4 +1,5 @@
 {
+    "forceAuth":false,
     "AuthApi":{
             "baseAdress":"https://sf.eldor.com.tr/AuthService",
         

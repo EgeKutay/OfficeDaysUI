@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { canNavigate } from '@/libs/acl/routeProtection'
 import { isUserLoggedIn, getHomeRouteForLoggedInUser } from '@/auth/utils'
+const appConfig = require("@/appConfig")
 import { t } from '@/@core/libs/i18n/utils'
 
 Vue.use(VueRouter)
@@ -91,6 +92,7 @@ const router = new VueRouter({
 
 // ? For splash screen
 // Remove afterEach hook if you are not using splash screen
+if(appConfig["forceAuth"]){
 router.beforeEach((to, _, next) => {
 
  
@@ -117,7 +119,7 @@ router.beforeEach((to, _, next) => {
 }
   return next()
 })
-
+}
 router.afterEach(() => {
   // Remove initial loading
   const appLoading = document.getElementById('loading-bg')
