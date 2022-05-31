@@ -267,11 +267,11 @@ let replicateDays=dummydata["days"]
     let employeeObj = {
       Id: "error",
       Name: "Name",
-      Monday: "emp",
-      Tuesday: "emp",
-      Wednesday: "emp",
-      Thursday: "emp",
-      Friday: "emp",
+      Monday: "R",
+      Tuesday: "R",
+      Wednesday: "R",
+      Thursday: "R",
+      Friday: "R",
     };
     employeeObj["Id"] = emp.id;
     employeeObj["Name"] = emp.name;
