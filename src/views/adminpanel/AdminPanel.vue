@@ -23,14 +23,13 @@
     ref="my-table"
       :columns="columns"
       :rows="rows"
+     
      @on-cell-click="onCellClick"
-        max-height="500px"
       :search-options="{
         enabled: true,
         externalQuery: searchTerm }"
       :select-options="{
         enabled: true,
-        
         selectOnCheckboxOnly: true, // only select when checkbox is clicked instead of the row
         selectionInfoClass: 'custom-class',
         selectionText: 'rows selected',
@@ -44,15 +43,25 @@
       }"
      theme="nocturnal">
    
-          <template slot="table-row" slot-scope="props">
-      <span v-if="props.column.field == 'Monday'">
-        <button >Edit</button>
-        
+      <template slot="table-row" slot-scope="props" >
+        <div v-for="day in weekdays"  >
+      <span v-if="props.column.field ==day" >
+         
+       <span class="wrap" >
+          <span :class="getCellClass(props)"  >
+            <br>
+           
+             {{props.row[day]}}
+      
+          </span>
+        </span> 
       </span>
-      <span v-else>
+            </div>
+      <span >
         {{props.formattedRow[props.column.field]}}
       </span>
     </template>
+   
 
       <!-- pagination -->
     
@@ -117,7 +126,8 @@ import store from '@/store/index'
 let dummydata = JSON.parse(JSON.stringify(require("@/localdb/config.json")))
 let employees=dummydata["employees"]
 import employeeRows from "./EmployeeRows.vue"
-import initEmployeeConfig from "./InitEmployees"
+import employeeConfig from "./InitEmployees"
+import { findIndex, indexOf } from 'postcss-rtl/lib/affected-props'
 export default {
   components: {
     
@@ -135,7 +145,10 @@ export default {
   },
   data() {
     return {
-      dayTypes:["R","NW","SW","UL","HR","ML"],
+     employeeCell:[{employee:{},dayClicked:0}],
+      dayClicked:0,
+      weekdays:["Monday","Tuesday","Wednesday","Thursday","Friday"],
+      dayTypes:["R","NW","SW","UL","HR","ML","PH"],
       pageLength: 10,
       dir: false,
       columns: [
@@ -248,64 +261,163 @@ export default {
     },
   },
   created(){
-    
-
-    
-     this.rows = JSON.parse(JSON.stringify(initEmployeeConfig))
+     this.rows = JSON.parse(JSON.stringify(employeeConfig))
+     for(employee of employeeConfig){
+       this.employeeCell.push({employee:employee.Id,dayClicked:0})
+     }
   },
   methods:{
-
-<<<<<<< HEAD
- console.log(employees)
-  for(let emp of employees) {
-     
-    let employeeObj = {
-      Id: "error",
-      Name: "Name",
-      Monday: "R",
-      Tuesday: "R",
-      Wednesday: "R",
-      Thursday: "R",
-      Friday: "R",
-    };
-    employeeObj["Id"] = emp.id;
-    employeeObj["Name"] = emp.name;
-    employeeObj["Officedays"] = emp.nwdaycount;
-    for (let j = 0; j < emp.nwdays.length; j++) {
-      for (let k = 0; k < Object.keys(employeeObj).length; k++) {
-        if (
-          Object.keys(employeeObj)[k].toLowerCase() ===emp.nwdays[j].toLowerCase()
-        ) {
-          employeeObj[`${Object.keys(employeeObj)[k]}`] = "NW";
-        }
-      }
-    }
-    for (let l = 0; l < emp.offdays.aldays.length; l++) {
-      for (let k = 0; k < Object.keys(employeeObj).length; k++) {
-        if (Object.keys(employeeObj)[k].toLowerCase() ===emp.offdays.aldays[l].toLowerCase()){
-          employeeObj[`${Object.keys(employeeObj)[k]}`] = "AL";
-        }
-      }
-    }
-    for (let l = 0; l < emp.offdays.hrdays.length; l++) {
-      for (let k = 0; k < Object.keys(employeeObj).length; k++) {
-        if (Object.keys(employeeObj)[k].toLowerCase() ===emp.offdays.hrdays[l].toLowerCase()){
-          employeeObj[`${Object.keys(employeeObj)[k]}`] = "HR";
-        }
-      }
-    }
-    for (let l = 0; l < emp.offdays.mldays.length; l++) {
-      for (let k = 0; k < Object.keys(employeeObj).length; k++) {
-        if (Object.keys(employeeObj)[k].toLowerCase() ===emp.offdays.mldays[l].toLowerCase()){
-          employeeObj[`${Object.keys(employeeObj)[k]}`] = "ML";
-        }
-      }
-=======
     onCellClick(event){
-      console.log(this.$refs["my-table"].selectedRows)
-      console.log(event)
->>>>>>> 0c393fc5cc73d191f0f2e11bcff49906584d0656
-    }
+let selectedRows=JSON.parse(JSON.stringify(this.$refs["my-table"].selectedRows))
+if(selectedRows.length>0)
+     console.log(selectedRows)
+      console.log(employeeConfig)
+      if(this.weekdays.includes(event.column.field)){
+      let theIndex = employeeConfig.findIndex((obj)=>{
+        return obj.Id===event.row.Id
+      })
+      this.employeeCell.push()
+  employeeConfig[theIndex][event.column.field]=this.dayTypes[this.dayClicked]
+  this.dayClicked++
+  console.log(this.dayClicked)
+  console.log(employeeConfig[theIndex][event.column.field])
+   this.rows = JSON.parse(JSON.stringify(employeeConfig))
+     if(this.dayClicked>=this.dayTypes.length){
+   this.dayClicked=0;
+   }
+      }
+    },
+    getCellClass(props){
+    
+     for(let day of this.weekdays){
+       if(props.column.field===day){
+             if(props.row[day]==="NW"){
+         return "blueCell"
+        }
+         else if(props.row[day]==="R"){
+         return "cyanCell"
+        }
+           else if(props.row[day]==="SW"){
+         return "pinkCell"
+        }
+         else  if(props.row[day]==="AL"){
+           return "yellowCell"
+        }
+         else  if(props.row[day]==="UL"){
+          return "purpleCell"
+        }
+         else  if(props.row[day]==="ML"){
+          return "orangeCell"
+        }
+         else  if(props.row[day]==="PH"){
+        return "goldCell"
+        }
+           else  if(props.row[day]==="HR"){
+          return "greenCell"
+        }
+        
+       
+       }
+     }
+      /*
+      for(let day of this.weekdays){
+       
+    
+          
+      }*/
+  
+    },
   }
 }
 </script>
+<style scoped>
+.wrap{
+  display: inline-block;
+ position: sticky;
+  width:100%;
+    text-align:center
+    
+}
+
+.blueCell{
+  background: rgb(136, 221, 255);
+  color: white;
+  position: absolute;
+  left: -0.75rem;
+  right: -0.75rem;
+  top: -2.00rem;
+  bottom: -2.8rem;
+  padding: 0.0rem;
+}
+.pinkCell{
+  background: rgb(210, 180, 220);
+  color: white;
+  position: absolute;
+  left: -0.75rem;
+  right: -0.75rem;
+  top: -2.00rem;
+  bottom: -2.8rem;
+  padding: 0.0rem;
+}
+.yellowCell{
+  background: rgb(255, 255, 0);
+  color: white;
+  position: absolute;
+  left: -0.75rem;
+  right: -0.75rem;
+  top: -2.00rem;
+  bottom: -2.8rem;
+  padding: 0.0rem;
+}
+.purpleCell{
+  background: rgb(100, 0, 255);
+  color: white;
+  position: absolute;
+  left: -0.75rem;
+  right: -0.75rem;
+  top: -2.00rem;
+  bottom: -2.8rem;
+  padding: 0.0rem;
+}
+.orangeCell{
+  background: rgb(255, 150, 0);
+  color: white;
+  position: absolute;
+  left: -0.75rem;
+  right: -0.75rem;
+  top: -2.00rem;
+  bottom: -2.8rem;
+  padding: 0.0rem;
+}
+.goldCell{
+  background: rgb(255, 200, 0);
+  color: white;
+  position: absolute;
+  left: -0.75rem;
+  right: -0.75rem;
+  top: -2.00rem;
+  bottom: -2.8rem;
+  padding:0.0rem;
+}
+.greenCell{
+  background: rgb(0, 194, 48);
+  color: white;
+  position: absolute;
+  left: -0.75rem;
+  right: -0.75rem;
+  top: -2.00rem;
+  bottom: -2.8rem;
+  padding: 0.0rem;
+}
+.cyanCell{
+  background: rgb(0, 200, 200);
+  color: white;
+  position: absolute;
+  left: -0.75rem;
+  right: -0.75rem;
+  top: -2.00rem;
+  bottom: -2.8rem;
+  padding: 0.0rem;
+}
+
+</style>
