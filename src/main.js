@@ -14,6 +14,12 @@ import '@/libs/portal-vue'
 import '@/libs/toastification'
 
 // BSV Plugin Registration
+import VueGoodTablePlugin from 'vue-good-table';
+
+// import the styles
+import 'vue-good-table/dist/vue-good-table.css'
+
+Vue.use(VueGoodTablePlugin);
 Vue.use(ToastPlugin)
 Vue.use(ModalPlugin)
 

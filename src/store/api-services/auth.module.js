@@ -11,7 +11,6 @@ const getters={
     console.log(user)
     return user
   }
-
 }
 const actions={
 async login(context,data){
@@ -33,7 +32,6 @@ const mutations={
     useJwt.setRefreshToken(state.user.data.refreshToken)
     localStorage.setItem('userData',JSON.stringify(response.data))
     console.log(response.data)
-
   }
 
 }

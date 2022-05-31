@@ -2,6 +2,8 @@
 <template>
   <div>
     <!-- search input -->
+    <b-card>
+    <b-card-body>
     <div class="custom-search d-flex justify-content-end">
       <b-form-group>
         <div class="d-flex align-items-center">
@@ -18,14 +20,17 @@
 
     <!-- table -->
     <vue-good-table
+    ref="my-table"
       :columns="columns"
       :rows="rows"
-      :rtl="direction"
+     @on-cell-click="onCellClick"
+        max-height="500px"
       :search-options="{
         enabled: true,
         externalQuery: searchTerm }"
       :select-options="{
         enabled: true,
+        
         selectOnCheckboxOnly: true, // only select when checkbox is clicked instead of the row
         selectionInfoClass: 'custom-class',
         selectionText: 'rows selected',
@@ -37,71 +42,20 @@
         enabled: true,
         perPage:pageLength
       }"
-    >
-      <template
-        slot="table-row"
-        slot-scope="props"
-      >
-
-        <!-- Column: Name -->
-        <span
-          v-if="props.column.field === 'ame'"
-          class="text-nowrap"
-        >
-          <b-avatar
-            :src="props.row.avatar"
-            class="mx-1"
-          />
-          <span class="text-nowrap">{{ props.row.fullName }}</span>
-        </span>
-
-        <!-- Column: Status -->
-        <span v-else-if="props.column.field === 'status'">
-          <b-badge :variant="statusVariant(props.row.status)">
-            {{ props.row.status }}
-          </b-badge>
-        </span>
-
-        <!-- Column: Action -->
-        <span v-else-if="props.column.field === 'action'">
-          <span>
-            <b-dropdown
-              variant="link"
-              toggle-class="text-decoration-none"
-              no-caret
-            >
-              <template v-slot:button-content>
-                <feather-icon
-                  icon="MoreVerticalIcon"
-                  size="16"
-                  class="text-body align-middle mr-25"
-                />
-              </template>
-              <b-dropdown-item>
-                <feather-icon
-                  icon="Edit2Icon"
-                  class="mr-50"
-                />
-                <span>Edit</span>
-              </b-dropdown-item>
-              <b-dropdown-item>
-                <feather-icon
-                  icon="TrashIcon"
-                  class="mr-50"
-                />
-                <span>Delete</span>
-              </b-dropdown-item>
-            </b-dropdown>
-          </span>
-        </span>
-
-        <!-- Column: Common -->
-        <span v-else>
-          {{ props.formattedRow[props.column.field] }}
-        </span>
-      </template>
+     theme="nocturnal">
+   
+          <template slot="table-row" slot-scope="props">
+      <span v-if="props.column.field == 'Monday'">
+        <button >Edit</button>
+        
+      </span>
+      <span v-else>
+        {{props.formattedRow[props.column.field]}}
+      </span>
+    </template>
 
       <!-- pagination -->
+    
       <template
         slot="pagination-bottom"
         slot-scope="props"
@@ -149,71 +103,108 @@
         </div>
       </template>
     </vue-good-table>
+    </b-card-body>
+    </b-card>
   </div>
 </template>
 
 <script>
 import {
-  BAvatar, BBadge, BPagination, BFormGroup, BFormInput, BFormSelect, BDropdown, BDropdownItem,
+  BAvatar, BBadge, BPagination, BFormGroup,BCard,BCardBody, BFormInput, BFormSelect, BDropdown, BDropdownItem,
 } from 'bootstrap-vue'
-import { VueGoodTable } from 'vue-good-table'
+
 import store from '@/store/index'
 let dummydata = JSON.parse(JSON.stringify(require("@/localdb/config.json")))
 let employees=dummydata["employees"]
 import employeeRows from "./EmployeeRows.vue"
+import initEmployeeConfig from "./InitEmployees"
 export default {
   components: {
-    VueGoodTable,
+    
     BAvatar,
     BBadge,
     BPagination,
     BFormGroup,
+    BCard,
     BFormInput,
     BFormSelect,
+    BCardBody,
     BDropdown,
     BDropdownItem,
     employeerows:employeeRows
   },
   data() {
     return {
-      pageLength: 3,
+      dayTypes:["R","NW","SW","UL","HR","ML"],
+      pageLength: 10,
       dir: false,
       columns: [
         {
           label: 'Id',
           field: 'Id',
+           filterOptions: {
+            enabled: true,
+            placeholder: 'Search Date',
+          },
         },
         {
           label: 'Name',
           field: 'Name',
+           filterOptions: {
+            enabled: true,
+            placeholder: 'Search Date',
+          },
         },
         {
           label: 'Monday',
           field: 'Monday',
+           filterOptions: {
+            enabled: true,
+            placeholder: 'Search Date',
+          },
         },
         {
           label: 'Tuesday',
           field: 'Tuesday',
+           filterOptions: {
+            enabled: true,
+            placeholder: 'Search Date',
+          },
         },
         {
           label: 'Wednesday',
           field: 'Wednesday',
+           filterOptions: {
+            enabled: true,
+            placeholder: 'Search Date',
+          },
         },
         {
           label: 'Thursday',
           field: 'Thursday',
+           filterOptions: {
+            enabled: true,
+            placeholder: 'Search Date',
+          },
         },
         {
           label:'Friday',
-          field:'Friday'
+          field:'Friday',
+           filterOptions: {
+            enabled: true,
+            placeholder: 'Search Date',
+          },
         },
         {
           label:'Normal Work Day Count',
-          field:'nwdaycount'
-
+          field:'Officedays',
+           filterOptions: {
+            enabled: true,
+            placeholder: 'Search Date',
+          },
         }
       ],
-      rows: [],
+      rows: [{Id: 20001, "Name": 'GOKHAN BINGOL', Monday: 'emp', Tuesday: 'SW', Wednesday: 'SW',Thursday:'SW',Friday:'HR'}],
       searchTerm: '',
       status: [{
         1: 'Current',
@@ -257,83 +248,17 @@ export default {
     },
   },
   created(){
-    let officeDayArr = [];
-let replicateDays=dummydata["days"]
-
-
- console.log(employees)
-  for(let emp of employees) {
-     
-    let employeeObj = {
-      Id: "error",
-      Name: "Name",
-      Monday: "emp",
-      Tuesday: "emp",
-      Wednesday: "emp",
-      Thursday: "emp",
-      Friday: "emp",
-    };
-    employeeObj["Id"] = emp.id;
-    employeeObj["Name"] = emp.name;
-    employeeObj["Officedays"] = emp.nwdaycount;
-    for (let j = 0; j < emp.nwdays.length; j++) {
-      for (let k = 0; k < Object.keys(employeeObj).length; k++) {
-        if (
-          Object.keys(employeeObj)[k].toLowerCase() ===emp.nwdays[j].toLowerCase()
-        ) {
-          employeeObj[`${Object.keys(employeeObj)[k]}`] = "NW";
-        }
-      }
-    }
-    for (let l = 0; l < emp.offdays.aldays.length; l++) {
-      for (let k = 0; k < Object.keys(employeeObj).length; k++) {
-        if (Object.keys(employeeObj)[k].toLowerCase() ===emp.offdays.aldays[l].toLowerCase()){
-          employeeObj[`${Object.keys(employeeObj)[k]}`] = "AL";
-        }
-      }
-    }
-    for (let l = 0; l < emp.offdays.hrdays.length; l++) {
-      for (let k = 0; k < Object.keys(employeeObj).length; k++) {
-        if (Object.keys(employeeObj)[k].toLowerCase() ===emp.offdays.hrdays[l].toLowerCase()){
-          employeeObj[`${Object.keys(employeeObj)[k]}`] = "HR";
-        }
-      }
-    }
-    for (let l = 0; l < emp.offdays.mldays.length; l++) {
-      for (let k = 0; k < Object.keys(employeeObj).length; k++) {
-        if (Object.keys(employeeObj)[k].toLowerCase() ===emp.offdays.mldays[l].toLowerCase()){
-          employeeObj[`${Object.keys(employeeObj)[k]}`] = "ML";
-        }
-      }
-    }
-    for (let l = 0; l < emp.offdays.swdays.length; l++) {
-      for (let k = 0; k < Object.keys(employeeObj).length; k++) {
-        if (Object.keys(employeeObj)[k].toLowerCase() ===emp.offdays.swdays[l].toLowerCase()){
-          employeeObj[`${Object.keys(employeeObj)[k]}`] = "SW";
-        }
-      }
-    }
-    for (let l = 0; l < emp.offdays.uldays.length; l++) {
-      for (let k = 0; k < Object.keys(employeeObj).length; k++) {
-        if (Object.keys(employeeObj)[k].toLowerCase() ===emp.offdays.uldays[l].toLowerCase()){
-          employeeObj[`${Object.keys(employeeObj)[k]}`] = "UL";
-        }
-      }
-    }
-    for(let m=0;m<replicateDays.length;m++){
-      if(replicateDays[m].employeeCount===0){
-        for (let k = 0; k < Object.keys(employeeObj).length; k++) {
-          if (Object.keys(employeeObj)[k].toLowerCase() ===replicateDays[m].day.toLowerCase()){
-            employeeObj[`${Object.keys(employeeObj)[k]}`] = "PH";
-          }
-        }
-      }
-    }
-    officeDayArr.push(employeeObj);
-  }
+    
 
     
-     this.rows = officeDayArr
+     this.rows = JSON.parse(JSON.stringify(initEmployeeConfig))
   },
+  methods:{
+
+    onCellClick(event){
+      console.log(this.$refs["my-table"].selectedRows)
+      console.log(event)
+    }
+  }
 }
 </script>
