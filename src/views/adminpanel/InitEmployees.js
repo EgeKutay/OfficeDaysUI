@@ -4,7 +4,6 @@ let officeDayArr = [];
 let replicateDays=dummydata["days"]
 
 
- console.log(employees)
   for(let emp of employees) {
      
     let employeeObj = {
@@ -74,5 +73,5 @@ let replicateDays=dummydata["days"]
     }
     officeDayArr.push(employeeObj);
   }
-  console.log(officeDayArr)
+
   module.exports = officeDayArr;
