@@ -116,7 +116,7 @@
         </div>
       </template>
     </vue-good-table>
-    <b-button variant="success">Generate Config</b-button>
+    <b-button variant="success" @click="GenerateConfig" >Generate Config</b-button>
     </b-card-body>
     </b-card>
   </div>
@@ -282,129 +282,178 @@ export default {
      }
   },
   methods:{
-    selectionChanged(event){
-      event.selectedRows=this.selectedRows
+      selectionChanged(event){
+        event.selectedRows=this.selectedRows
 
-    },
-    onCellClick(event){
+      },
+      onCellClick(event){
 
-       if(this.weekdays.includes(event.column.field)){
-      this.changeDaysCell(event)
-       }
-       else{
-         if(!this.$refs["my-table"].selectedRows.includes(event.row)){
-         this.$refs["my-table"].selectedRows.push(event.row)
-         this.$refs["my-table"].selectedPageRows.push(event.row)
-         console.log(event)
-    
-         event.row["vgtSelected"]=true
-         console.log(this.$refs["my-table"].selectedPageRows)
-         }
-       }
-    
-   
-    },
-    changeDaysCell(event){
-       let selectedRows=this.$refs["my-table"].selectedRows
-       
- 
-    if(this.weekdays.includes(event.column.field))
-    {
-      if(selectedRows.length<1){
-      let employeeConfigIndex = employeeConfig.findIndex((obj)=>{
-        return obj.Id===event.row.Id
-      })
-      let employeeCellIndex= this.employeeCell.findIndex((obj)=>{
-        return obj.employee===event.row.Id
-      })
-      employeeConfig[employeeConfigIndex][event.column.field]=this.dayTypes[ this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]]
-      this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]++
+        if(this.weekdays.includes(event.column.field)){
+        this.updateDaysCell(event)
+        }
+        else{
+          if(!this.$refs["my-table"].selectedRows.includes(event.row)){
+          this.$refs["my-table"].selectedRows.push(event.row)
+          this.$refs["my-table"].selectedPageRows.push(event.row)
+          console.log(event)
       
-      this.rows = employeeConfig
-      if(this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]>this.dayTypes.length-1){
-          this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]=0
+          event.row["vgtSelected"]=true
+          console.log(this.$refs["my-table"].selectedPageRows)
+          }
         }
-      }
-      else{
-     
-      let findDayTypeIndex=this.dayTypes.find((obj)=>{
-        return obj===event.row[event.column.field]
-      })
-      for(let emp of selectedRows){
-        let findEmployeeIndex=employeeConfig.findIndex((obj)=>{
-        return obj.Id===event.row.Id
-      })
-      let employeeCellIndex= this.employeeCell.findIndex((obj)=>{
-        return obj.employee===event.row.Id
-      })
-       let empCellIndex= this.employeeCell.findIndex((obj)=>{
-        return obj.employee===emp.Id
-      })
-      this.employeeCell[empCellIndex][`${event.column.field}Clicked`]=this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]
-      }
-        for( let emp of selectedRows){
-           let employeeConfigIndex = employeeConfig.findIndex((obj)=>{
-        return obj.Id===emp.Id
-      })
-        let employeeCellIndex= this.employeeCell.findIndex((obj)=>{
-        return obj.employee===emp.Id
-      })
-      employeeConfig[employeeConfigIndex][event.column.field]=this.dayTypes[ this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]]
-      this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]++
-     
-      this.rows = employeeConfig
-   
-      if(this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]>this.dayTypes.length-1){
-          this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]=0
-        }
-        }
-      }
-    }
-    },
-   getCellClass(props){
+      
     
-     for(let day of this.weekdays){
-     
-       if(props.column.field===day){
-             if(props.row[day]==="NW"){
-         return "blueCell"
-        }
-         else if(props.row[day]==="R"){
-         return "cyanCell"
-        }
-           else if(props.row[day]==="SW"){
-         return "pinkCell"
-        }
-         else  if(props.row[day]==="AL"){
-           return "yellowCell"
-        }
-         else  if(props.row[day]==="UL"){
-          return "purpleCell"
-        }
-         else  if(props.row[day]==="ML"){
-          return "orangeCell"
-        }
-         else  if(props.row[day]==="PH"){
-        return "goldCell"
-        }
-           else  if(props.row[day]==="HR"){
-          return "greenCell"
-        }
+      },
+      updateDaysCell(event){
+        let selectedRows=this.$refs["my-table"].selectedRows
         
-       
-       }
-     }
-      /*
-      for(let day of this.weekdays){
-       
-    
-          
-      }*/
   
-    },
+      if(this.weekdays.includes(event.column.field))
+      {
+        if(selectedRows.length<1){
+        let employeeConfigIndex = employeeConfig.findIndex((obj)=>{
+          return obj.Id===event.row.Id
+        })
+        let employeeCellIndex= this.employeeCell.findIndex((obj)=>{
+          return obj.employee===event.row.Id
+        })
+        employeeConfig[employeeConfigIndex][event.column.field]=this.dayTypes[ this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]]
+        this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]++
+        
+        this.rows = employeeConfig
+        if(this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]>this.dayTypes.length-1){
+            this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]=0
+          }
+        }
+        else{
+      
+        let findDayTypeIndex=this.dayTypes.find((obj)=>{
+          return obj===event.row[event.column.field]
+        })
+        for(let emp of selectedRows){
+          let findEmployeeIndex=employeeConfig.findIndex((obj)=>{
+          return obj.Id===event.row.Id
+        })
+        let employeeCellIndex= this.employeeCell.findIndex((obj)=>{
+          return obj.employee===event.row.Id
+        })
+        let empCellIndex= this.employeeCell.findIndex((obj)=>{
+          return obj.employee===emp.Id
+        })
+        this.employeeCell[empCellIndex][`${event.column.field}Clicked`]=this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]
+        }
+          for( let emp of selectedRows){
+            let employeeConfigIndex = employeeConfig.findIndex((obj)=>{
+          return obj.Id===emp.Id
+        })
+          let employeeCellIndex= this.employeeCell.findIndex((obj)=>{
+          return obj.employee===emp.Id
+        })
+        employeeConfig[employeeConfigIndex][event.column.field]=this.dayTypes[ this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]]
+        this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]++
+      
+        this.rows = employeeConfig
+    
+        if(this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]>this.dayTypes.length-1){
+            this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]=0
+          }
+          }
+        }
+      }
+      },
+    getCellClass(props){
+      
+      for(let day of this.weekdays){
+      
+        if(props.column.field===day){
+              if(props.row[day]==="NW"){
+          return "blueCell"
+          }
+          else if(props.row[day]==="R"){
+          return "cyanCell"
+          }
+            else if(props.row[day]==="SW"){
+          return "pinkCell"
+          }
+          else  if(props.row[day]==="AL"){
+            return "yellowCell"
+          }
+          else  if(props.row[day]==="UL"){
+            return "purpleCell"
+          }
+          else  if(props.row[day]==="ML"){
+            return "orangeCell"
+          }
+          else  if(props.row[day]==="PH"){
+          return "goldCell"
+          }
+            else  if(props.row[day]==="HR"){
+            return "greenCell"
+          }
+          
+        
+        }
+      }
+        /*
+        for(let day of this.weekdays){
+        
+      
+            
+        }*/
+    
+      },
+        GenerateConfig(){
+          console.log(this.rows)
+          let dayConfig=this.rows
+          let employeeArray=[]
+          let employeeBlock={}
+       
+          //{"id": 20001,"name": "GOKHAN BINGOL","nwdaycount": 3,"nwdays": [],"offdays":{"aldays":[],"hrdays":[],"uldays":[],"swdays":["Tuesday","Wednesday"],"mldays":[]}},
+        for( let ele of dayConfig){
+            let newConfig={
+            id:ele["Id"],
+            name:ele["Name"],
+            nwdaycount:ele["Officedays"]
+            }
+        
+        let nwdays=[]
+        let offdays={aldays:[],hrdays:[],uldays:[],swdays:[],mldays:[],phdays:[]}
+
+          for(let weekday of this.weekdays){
+            console.log(weekday)
+          if(ele[weekday]==="NW"){
+            nwdays.push(weekday.toString())
+          }
+          else  if(ele[weekday]==="AL"){
+            offdays.aldays.push(weekday.toString())
+          }
+          else  if(ele[weekday]==="HR"){
+           offdays.hrdays.push(weekday.toString())
+          }
+          else  if(ele[weekday]==="UL"){
+           offdays.uldays.push(weekday.toString())
+          }
+          else  if(ele[weekday]==="SW"){
+           offdays.swdays.push(weekday.toString())
+          }
+            else  if(ele[weekday]==="ML"){
+           offdays.mldays.push(weekday.toString())
+          }
+            else  if(ele[weekday]==="PH"){
+           offdays.phdays.push(weekday.toString())
+          }
+        }
+        newConfig["nwdays"]=nwdays
+        newConfig["offdays"]=offdays
+      employeeArray.push(newConfig)
+      }
+      console.log(JSON.stringify(employeeArray))
+        
+    }
   }
 }
 </script>
+
 <style scoped>
 .wrap{
   display: inline-block;
