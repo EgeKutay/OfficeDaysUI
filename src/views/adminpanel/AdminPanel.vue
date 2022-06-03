@@ -23,23 +23,19 @@
     ref="my-table"
       :columns="columns"
       :rows="rows"
-     @on-selected-rows-change="selectionChanged"
+     
      @on-cell-click="onCellClick"
       :search-options="{
         enabled: true,
         externalQuery: searchTerm }"
       :select-options="{
         enabled: true,
-        
         selectOnCheckboxOnly: true, // only select when checkbox is clicked instead of the row
-        
         selectionInfoClass: 'custom-class',
         selectionText: 'rows selected',
         clearSelectionText: 'clear',
         disableSelectInfo: true, // disable the select info panel on top
         selectAllByGroup: true, // when used in combination with a grouped table, add a checkbox in the header row to check/uncheck the entire group
-        
-        
       }"
       :pagination-options="{
         enabled: true,
@@ -116,7 +112,6 @@
         </div>
       </template>
     </vue-good-table>
-    <b-button variant="success" @click="GenerateConfig" >Generate Config</b-button>
     </b-card-body>
     </b-card>
   </div>
@@ -124,19 +119,18 @@
 
 <script>
 import {
-  BAvatar, BBadge, BPagination, BFormGroup,BCard,BCardBody, BFormInput, BFormSelect, BDropdown, BDropdownItem,BButton
+  BAvatar, BBadge, BPagination, BFormGroup,BCard,BCardBody, BFormInput, BFormSelect, BDropdown, BDropdownItem,
 } from 'bootstrap-vue'
 
 import store from '@/store/index'
-let dummydata = require("@/localdb/config.json")
+let dummydata = JSON.parse(JSON.stringify(require("@/localdb/config.json")))
 let employees=dummydata["employees"]
 import employeeRows from "./EmployeeRows.vue"
 import employeeConfig from "./InitEmployees"
-import { findIndex, includes, indexOf } from 'postcss-rtl/lib/affected-props'
-import { props } from 'vue-prism-component'
+import { findIndex, indexOf } from 'postcss-rtl/lib/affected-props'
 export default {
   components: {
-    BButton,
+    
     BAvatar,
     BBadge,
     BPagination,
@@ -153,9 +147,8 @@ export default {
     return {
      employeeCell:[{employee:{},dayClicked:0}],
       dayClicked:0,
-      selectedRowd:[],
       weekdays:["Monday","Tuesday","Wednesday","Thursday","Friday"],
-      dayTypes:["R","NW","SW","AL","PH","UL","HR","ML"],
+      dayTypes:["R","NW","SW","UL","HR","ML","PH"],
       pageLength: 10,
       dir: false,
       columns: [
@@ -164,7 +157,7 @@ export default {
           field: 'Id',
            filterOptions: {
             enabled: true,
-            placeholder: 'Search Ids',
+            placeholder: 'Search Date',
           },
         },
         {
@@ -172,7 +165,7 @@ export default {
           field: 'Name',
            filterOptions: {
             enabled: true,
-            placeholder: 'Search Name',
+            placeholder: 'Search Date',
           },
         },
         {
@@ -180,7 +173,7 @@ export default {
           field: 'Monday',
            filterOptions: {
             enabled: true,
-            placeholder: 'Search Work Type',
+            placeholder: 'Search Date',
           },
         },
         {
@@ -188,7 +181,7 @@ export default {
           field: 'Tuesday',
            filterOptions: {
             enabled: true,
-            placeholder: 'Search Work Type',
+            placeholder: 'Search Date',
           },
         },
         {
@@ -196,7 +189,7 @@ export default {
           field: 'Wednesday',
            filterOptions: {
             enabled: true,
-          placeholder: 'Search Work Type',
+            placeholder: 'Search Date',
           },
         },
         {
@@ -204,7 +197,7 @@ export default {
           field: 'Thursday',
            filterOptions: {
             enabled: true,
-           placeholder: 'Search Work Type',
+            placeholder: 'Search Date',
           },
         },
         {
@@ -212,7 +205,7 @@ export default {
           field:'Friday',
            filterOptions: {
             enabled: true,
-           placeholder: 'Search Work Type',
+            placeholder: 'Search Date',
           },
         },
         {
@@ -220,7 +213,7 @@ export default {
           field:'Officedays',
            filterOptions: {
             enabled: true,
-            placeholder: 'Search Day Count',
+            placeholder: 'Search Date',
           },
         }
       ],
@@ -253,6 +246,7 @@ export default {
         Applied      : 'light-info',
         /* eslint-enable key-spacing */
       }
+
       return status => statusColor[status]
     },
     direction() {
@@ -267,193 +261,75 @@ export default {
     },
   },
   created(){
-     this.rows =employeeConfig
-     for( let employee of employeeConfig){
-    
-       this.employeeCell.push(
-         {
-         employee:employee.Id,
-         MondayClicked:0,
-         TuesdayClicked:0,
-         WednesdayClicked:0,
-         ThursdayClicked:0,
-         FridayClicked:0,
-         })
+     this.rows = JSON.parse(JSON.stringify(employeeConfig))
+     for(employee of employeeConfig){
+       this.employeeCell.push({employee:employee.Id,dayClicked:0})
      }
   },
   methods:{
-      selectionChanged(event){
-        event.selectedRows=this.selectedRows
-
-      },
-      onCellClick(event){
-
-        if(this.weekdays.includes(event.column.field)){
-        this.updateDaysCell(event)
-        }
-        else{
-          if(!this.$refs["my-table"].selectedRows.includes(event.row)){
-          this.$refs["my-table"].selectedRows.push(event.row)
-          this.$refs["my-table"].selectedPageRows.push(event.row)
-          console.log(event)
-      
-          event.row["vgtSelected"]=true
-          console.log(this.$refs["my-table"].selectedPageRows)
-          }
-        }
-      
-    
-      },
-      updateDaysCell(event){
-        let selectedRows=this.$refs["my-table"].selectedRows
-        
-  
-      if(this.weekdays.includes(event.column.field))
-      {
-        if(selectedRows.length<1){
-        let employeeConfigIndex = employeeConfig.findIndex((obj)=>{
-          return obj.Id===event.row.Id
-        })
-        let employeeCellIndex= this.employeeCell.findIndex((obj)=>{
-          return obj.employee===event.row.Id
-        })
-        employeeConfig[employeeConfigIndex][event.column.field]=this.dayTypes[ this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]]
-        this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]++
-        
-        this.rows = employeeConfig
-        if(this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]>this.dayTypes.length-1){
-            this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]=0
-          }
-        }
-        else{
-      
-        let findDayTypeIndex=this.dayTypes.find((obj)=>{
-          return obj===event.row[event.column.field]
-        })
-        for(let emp of selectedRows){
-          let findEmployeeIndex=employeeConfig.findIndex((obj)=>{
-          return obj.Id===event.row.Id
-        })
-        let employeeCellIndex= this.employeeCell.findIndex((obj)=>{
-          return obj.employee===event.row.Id
-        })
-        let empCellIndex= this.employeeCell.findIndex((obj)=>{
-          return obj.employee===emp.Id
-        })
-        this.employeeCell[empCellIndex][`${event.column.field}Clicked`]=this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]
-        }
-          for( let emp of selectedRows){
-            let employeeConfigIndex = employeeConfig.findIndex((obj)=>{
-          return obj.Id===emp.Id
-        })
-          let employeeCellIndex= this.employeeCell.findIndex((obj)=>{
-          return obj.employee===emp.Id
-        })
-        employeeConfig[employeeConfigIndex][event.column.field]=this.dayTypes[ this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]]
-        this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]++
-      
-        this.rows = employeeConfig
-    
-        if(this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]>this.dayTypes.length-1){
-            this.employeeCell[employeeCellIndex][`${event.column.field}Clicked`]=0
-          }
-          }
-        }
+    onCellClick(event){
+let selectedRows=JSON.parse(JSON.stringify(this.$refs["my-table"].selectedRows))
+if(selectedRows.length>0)
+     console.log(selectedRows)
+      console.log(employeeConfig)
+      if(this.weekdays.includes(event.column.field)){
+      let theIndex = employeeConfig.findIndex((obj)=>{
+        return obj.Id===event.row.Id
+      })
+      this.employeeCell.push()
+  employeeConfig[theIndex][event.column.field]=this.dayTypes[this.dayClicked]
+  this.dayClicked++
+  console.log(this.dayClicked)
+  console.log(employeeConfig[theIndex][event.column.field])
+   this.rows = JSON.parse(JSON.stringify(employeeConfig))
+     if(this.dayClicked>=this.dayTypes.length){
+   this.dayClicked=0;
+   }
       }
-      },
+    },
     getCellClass(props){
-      
-      for(let day of this.weekdays){
-      
-        if(props.column.field===day){
-              if(props.row[day]==="NW"){
-          return "blueCell"
-          }
-          else if(props.row[day]==="R"){
-          return "cyanCell"
-          }
-            else if(props.row[day]==="SW"){
-          return "pinkCell"
-          }
-          else  if(props.row[day]==="AL"){
-            return "yellowCell"
-          }
-          else  if(props.row[day]==="UL"){
-            return "purpleCell"
-          }
-          else  if(props.row[day]==="ML"){
-            return "orangeCell"
-          }
-          else  if(props.row[day]==="PH"){
-          return "goldCell"
-          }
-            else  if(props.row[day]==="HR"){
-            return "greenCell"
-          }
-          
-        
-        }
-      }
-        /*
-        for(let day of this.weekdays){
-        
-      
-            
-        }*/
     
-      },
-        GenerateConfig(){
-          console.log(this.rows)
-          let dayConfig=this.rows
-          let employeeArray=[]
-          let employeeBlock={}
-       
-          //{"id": 20001,"name": "GOKHAN BINGOL","nwdaycount": 3,"nwdays": [],"offdays":{"aldays":[],"hrdays":[],"uldays":[],"swdays":["Tuesday","Wednesday"],"mldays":[]}},
-        for( let ele of dayConfig){
-            let newConfig={
-            id:ele["Id"],
-            name:ele["Name"],
-            nwdaycount:ele["Officedays"]
-            }
-        
-        let nwdays=[]
-        let offdays={aldays:[],hrdays:[],uldays:[],swdays:[],mldays:[],phdays:[]}
-
-          for(let weekday of this.weekdays){
-            console.log(weekday)
-          if(ele[weekday]==="NW"){
-            nwdays.push(weekday.toString())
-          }
-          else  if(ele[weekday]==="AL"){
-            offdays.aldays.push(weekday.toString())
-          }
-          else  if(ele[weekday]==="HR"){
-           offdays.hrdays.push(weekday.toString())
-          }
-          else  if(ele[weekday]==="UL"){
-           offdays.uldays.push(weekday.toString())
-          }
-          else  if(ele[weekday]==="SW"){
-           offdays.swdays.push(weekday.toString())
-          }
-            else  if(ele[weekday]==="ML"){
-           offdays.mldays.push(weekday.toString())
-          }
-            else  if(ele[weekday]==="PH"){
-           offdays.phdays.push(weekday.toString())
-          }
+     for(let day of this.weekdays){
+       if(props.column.field===day){
+             if(props.row[day]==="NW"){
+         return "blueCell"
         }
-        newConfig["nwdays"]=nwdays
-        newConfig["offdays"]=offdays
-      employeeArray.push(newConfig)
-      }
-      console.log(JSON.stringify(employeeArray))
+         else if(props.row[day]==="R"){
+         return "cyanCell"
+        }
+           else if(props.row[day]==="SW"){
+         return "pinkCell"
+        }
+         else  if(props.row[day]==="AL"){
+           return "yellowCell"
+        }
+         else  if(props.row[day]==="UL"){
+          return "purpleCell"
+        }
+         else  if(props.row[day]==="ML"){
+          return "orangeCell"
+        }
+         else  if(props.row[day]==="PH"){
+        return "goldCell"
+        }
+           else  if(props.row[day]==="HR"){
+          return "greenCell"
+        }
         
-    }
+       
+       }
+     }
+      /*
+      for(let day of this.weekdays){
+       
+    
+          
+      }*/
+  
+    },
   }
 }
 </script>
-
 <style scoped>
 .wrap{
   display: inline-block;
@@ -484,7 +360,7 @@ export default {
   padding: 0.0rem;
 }
 .yellowCell{
-  background: rgb(200, 200, 0);
+  background: rgb(255, 255, 0);
   color: white;
   position: absolute;
   left: -0.75rem;
