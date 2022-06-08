@@ -261,8 +261,23 @@ export default {
     },
   },
   created(){
-     this.rows = JSON.parse(JSON.stringify(employeeConfig))
-     for(employee of employeeConfig){
+    console.log(employeeConfig)
+     let mappedarr=employeeConfig.map((key)=>{
+       return {
+         Id:key.Id,
+         Name:key.Name,
+         Officedays:key.Officedays,
+         Monday:key.days.Monday,
+          Tuesday:key.days.Tuesday,
+          Wednesday:key.days.Wednesday,
+          Thursday:key.days.Thursday,
+          Friday:key.days.Friday,
+
+         }
+     })
+  console.log(mappedarr)
+     this.rows = mappedarr
+     for(let employee of employeeConfig){
        this.employeeCell.push({employee:employee.Id,dayClicked:0})
      }
   },
@@ -270,8 +285,6 @@ export default {
     onCellClick(event){
 let selectedRows=JSON.parse(JSON.stringify(this.$refs["my-table"].selectedRows))
 if(selectedRows.length>0)
-     console.log(selectedRows)
-      console.log(employeeConfig)
       if(this.weekdays.includes(event.column.field)){
       let theIndex = employeeConfig.findIndex((obj)=>{
         return obj.Id===event.row.Id
@@ -281,7 +294,7 @@ if(selectedRows.length>0)
   this.dayClicked++
   console.log(this.dayClicked)
   console.log(employeeConfig[theIndex][event.column.field])
-   this.rows = JSON.parse(JSON.stringify(employeeConfig))
+   //this.rows = mappedarr
      if(this.dayClicked>=this.dayTypes.length){
    this.dayClicked=0;
    }
