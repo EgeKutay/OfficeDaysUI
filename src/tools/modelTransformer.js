@@ -4,7 +4,7 @@ function Json2ExcelFormat(jsonmodel){
 //excel format means the data model is ready to exported to excel
 //this function will convert default config file to excel
  
-employees=jsonmodel
+let employees=jsonmodel
 let mappedArr=employees.map((key)=>{
     let days={
     Monday: "R",
@@ -49,14 +49,22 @@ function Excel2JsonFormat(excelmodel){
             for(let dkey in offdays){
                 if(dkey.substring(0,2).toUpperCase()==key.offdays[day]){
                    offdays[`${dkey.substring(0,2).toLowerCase()}days`].push(day)
+                   
                 }
             }
             
         }
-        console.log(offdays)
+        return {
+            id:key.Id,
+            name:key.Name,
+            nwdaycount:key.Officedays,
+            offdays:offdays
+        }
+       
     
     
     })
+    return mappedArr
 }
 /**param as an employeeobject  */
 function getDaysObject(empobj){
@@ -73,10 +81,11 @@ function getDaysObject(empobj){
   return resultObj
 
 }
-Excel2JsonFormat(Json2ExcelFormat(configFile["employees"]))
-/*
+
+
 export default{
     Json2ExcelFormat,
-    Excel2JsonFormat
+    Excel2JsonFormat,
+    getDaysObject
 
-}*/
+}
