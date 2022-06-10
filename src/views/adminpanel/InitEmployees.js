@@ -6,19 +6,19 @@ let replicateDays=dummydata["days"]
 
 for(emp of employees) {
   let employeeObj = {
-    Id: "error",
-    Name: "Name",
+    id: "error",
+    name: "Name",
     days:{
-    Monday: "R",
-    Tuesday: "R",
-    Wednesday: "R",
-    Thursday: "R",
-    Friday: "R",
+    monday: "R",
+    tuesday: "R",
+    wednesday: "R",
+    thursday: "R",
+    friday: "R",
     }
   };
-  employeeObj["Id"] = emp.id;
-  employeeObj["Name"] = emp.name;
-  employeeObj["Officedays"] = emp.nwdaycount;
+  employeeObj["id"] = emp.id;
+  employeeObj["name"] = emp.name;
+  employeeObj["officedays"] = emp.nwdaycount;
   for (let j = 0; j < emp.offdays.nwdays.length; j++) {
     for (let k = 0; k < Object.keys(employeeObj["days"]).length; k++) {
       if (
