@@ -272,9 +272,10 @@ export default {
     },
   },
   created(){
-
-  
-     this.rows = this.rowData
+    this.$store.dispatch("updateExcelRows",this.rowData)
+    
+     this.rows = this.$store.getters.getExcelRows
+     
      for( let employee of employees){
        //this is needed to keep track for cells clicked by user
        this.employeeCell.push({
@@ -344,8 +345,11 @@ export default {
            if( this.employeeCell[findIndex].days[day]>=this.dayTypes.length){
                 this.employeeCell[findIndex].days[day]=0
             }
-            //event.row[day]=this.dayTypes[this.employeeCell[findIndex].days[day]]
+            event.row[day]=this.dayTypes[this.employeeCell[findIndex].days[day]]
+            this.$store.dispatch("updateChangedExcelRows")
             this.rows[rowIndex][day]=this.dayTypes[this.employeeCell[findIndex].days[day]]
+
+
            
             
           }

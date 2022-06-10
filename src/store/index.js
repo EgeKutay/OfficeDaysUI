@@ -6,7 +6,7 @@ import app from './app'
 import appConfig from './app-config'
 import verticalMenu from './vertical-menu'
 import auth from './api-services/auth.module'
-
+import officedays from './officedays/index'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -14,7 +14,8 @@ export default new Vuex.Store({
     app,
     appConfig,
     verticalMenu,
-    auth
+    auth,
+    officedays
   },
   strict: process.env.DEV,
 })
