@@ -1,13 +1,11 @@
 {
     "forceAuth":false,
     "AuthApi":{
-            "baseAdress":"https://sf.eldor.com.tr/AuthService",
-        
-            "loginEndPoint":"https://sf.eldor.com.tr/AuthService/api/Auth/v3/Login",
-            "loginViaRefreshTokenEndPoint":"https://sf.eldor.com.tr/AuthService/api/Auth/LoginWithRefreshToken"
-
-
+     "baseAdress":"https://sf.eldor.com.tr/AuthService",
+     "loginEndPoint":"https://sf.eldor.com.tr/AuthService/api/Auth/v3/Login",
+     "loginViaRefreshTokenEndPoint":"https://sf.eldor.com.tr/AuthService/api/Auth/LoginWithRefreshToken"
     },
     "weekdays":["monday","tuesday","wednesday","thursday","friday"],
-    "dayTypes":["R","NW","SW","AL","UL","HR","ML","PH"]
+    "dayTypes":["RM","NW","SW","AL","UL","HR","ML","PH"],
+    "admins":[20001,20015,20017,16000287]
 }

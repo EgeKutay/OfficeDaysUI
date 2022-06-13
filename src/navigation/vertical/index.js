@@ -13,5 +13,10 @@ export default [
     title: 'Admin Panel',
     route: 'admin-panel',
     icon: 'UserIcon',
+  },
+  {
+    title:'Working Plan',
+    route:'working-plan',
+    icon:'FileIcon'
   }
 ]

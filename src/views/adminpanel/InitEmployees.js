@@ -9,11 +9,11 @@ for(emp of employees) {
     id: "error",
     name: "Name",
     days:{
-    monday: "R",
-    tuesday: "R",
-    wednesday: "R",
-    thursday: "R",
-    friday: "R",
+    monday: "RM",
+    tuesday: "RM",
+    wednesday: "RM",
+    thursday: "RM",
+    friday: "RM",
     }
   };
   employeeObj["id"] = emp.id;

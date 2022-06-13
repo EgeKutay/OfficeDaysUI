@@ -67,6 +67,20 @@ const router = new VueRouter({
         ],
       },
     },
+       {//ADMINPANEL MAIN COMPONENT
+        path: '/working-plan',
+        name: 'working-plan',
+        component: () => import('@/views/adminpanel/AdminPanel.vue'),
+        meta: {
+          pageTitle: 'Working Plan',
+          breadcrumb: [
+            {
+              text: 'Working Plan',
+              active: true,
+            },
+          ],
+        },
+      },
     {
       path: '/error-404',
       name: 'error-404',
@@ -94,14 +108,8 @@ const router = new VueRouter({
 // Remove afterEach hook if you are not using splash screen
 if(appConfig["forceAuth"]){
 router.beforeEach((to, _, next) => {
-
- 
   const isLoggedIn = isUserLoggedIn()
   if(to.path!=="/login"&&!isLoggedIn){
- 
-
-
- 
   if (!canNavigate(to)) {
     // Redirect to login if not logged in
     // ! We updated login route name here from `auth-login` to `login` in starter-kit

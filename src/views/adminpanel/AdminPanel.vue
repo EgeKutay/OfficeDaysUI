@@ -3,6 +3,8 @@
   <div>
     <!-- search input -->
     <b-card>
+    <b-button variant="primary" @click="GenerateWorkingPlan">Generate Working Plan</b-button>
+    <b-button variant="success" style="margin-left:20px">Save Default</b-button>
     <b-card-body>
     <div class="custom-search d-flex justify-content-end">
       <b-form-group>
@@ -17,6 +19,7 @@
         </div>
       </b-form-group>
     </div>
+
 
     <!-- table -->
     <vue-good-table
@@ -75,6 +78,9 @@
         slot-scope="props"
       >
         <div class="d-flex justify-content-between flex-wrap">
+           <b-row>
+             hello
+           </b-row>
           <div class="d-flex align-items-center mb-0 mt-1">
             <span class="text-nowrap ">
               Showing 1 to
@@ -87,7 +93,9 @@
             />
             <span class="text-nowrap"> of {{ props.total }} entries </span>
           </div>
+         
           <div>
+           
             <b-pagination
               :value="1"
               :total-rows="props.total"
@@ -124,13 +132,13 @@
 
 <script>
 import {
-  BAvatar, BBadge, BPagination, BFormGroup,BCard,BCardBody, BFormInput, BFormSelect, BDropdown, BDropdownItem,
+  BAvatar, BBadge, BPagination, BFormGroup,BCard,BCardBody, BFormInput, BFormSelect, BDropdown, BDropdownItem,BButton,BRow,BCol
 } from 'bootstrap-vue'
 
 import store from '@/store/index'
 
 
-
+import tableConfig from "./tableConfig.js"
 import employeeRows from "./EmployeeRows.vue"
 import employeeConfig from "./InitEmployees"
 import { findIndex, indexOf } from 'postcss-rtl/lib/affected-props'
@@ -139,9 +147,11 @@ import tools from "@/tools/modelTransformer"
 
 export default {
   components: {
-    
+    BRow,
+    BCol,
     BAvatar,
     BBadge,
+    BButton,
     BPagination,
     BFormGroup,
     BCard,
@@ -165,128 +175,21 @@ export default {
       dayTypes:appConfig["dayTypes"],
       pageLength: 10,
       dir: false,
-      columns: [
-        {
-          label: 'Id',
-          field: 'id',
-           filterOptions: {
-            enabled: true,
-            placeholder: 'Search Id',
-          },
-        },
-        {
-          label: 'Name',
-          field: 'name',
-           filterOptions: {
-            enabled: true,
-            placeholder: 'Search Name',
-          },
-        },
-        {
-          label: 'Monday',
-          field: 'monday',
-           filterOptions: {
-            enabled: true,
-            placeholder: 'Search Type',
-          },
-        },
-        {
-          label: 'Tuesday',
-          field: 'tuesday',
-           filterOptions: {
-            enabled: true,
-            placeholder: 'Search Type',
-          },
-        },
-        {
-          label: 'Wednesday',
-          field: 'wednesday',
-           filterOptions: {
-            enabled: true,
-            placeholder: 'Search Type',
-          },
-        },
-        {
-          label: 'Thursday',
-          field: 'thursday',
-           filterOptions: {
-            enabled: true,
-            placeholder: 'Search Type',
-          },
-        },
-        {
-          label:'Friday',
-          field:'friday',
-           filterOptions: {
-            enabled: true,
-            placeholder: 'Search Type',
-          },
-        },
-        {
-          label:'Normal Work Day Count',
-          field:'nwdaycount',
-           filterOptions: {
-            enabled: true,
-            placeholder: 'Search Count',
-          },
-        }
-      ],
+      columns:tableConfig["columns"],
       rows: [],
       searchTerm: '',
-      status: [{
-        1: 'Current',
-        2: 'Professional',
-        3: 'Rejected',
-        4: 'Resigned',
-        5: 'Applied',
-      },
-      {
-        1: 'light-primary',
-        2: 'light-success',
-        3: 'light-danger',
-        4: 'light-warning',
-        5: 'light-info',
-      }],
     }
-   
   },
   computed: {
-    statusVariant() {
-      const statusColor = {
-        /* eslint-disable key-spacing */
-        Current      : 'light-primary',
-        Professional : 'light-success',
-        Rejected     : 'light-danger',
-        Resigned     : 'light-warning',
-        Applied      : 'light-info',
-        /* eslint-enable key-spacing */
-      }
-
-      return status => statusColor[status]
-    },
-    direction() {
-      if (store.state.appConfig.isRTL) {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.dir = true
-        return this.dir
-      }
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.dir = false
-      return this.dir
-    },
   },
   created(){
    if(this.$store.getters.getExcelRows<1){
   let config = JSON.parse(JSON.stringify(require("@/localdb/config.json")))
 this.employees=tools.Json2ExcelFormat(config["employees"])
   this.$store.dispatch("updateExcelRows",this.employees)
-
    }
    console.log(this.$store.getters.getExcelRows)
     this.rows = this.$store.getters.getExcelRows
-   
-    
-     
      for( let employee of this.rows){
        employee.vgtSelected=false //reset select boxes
        //this is needed to keep track for cells clicked by user
@@ -392,13 +295,20 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
     // this.$set(event.row,'vgtSelected',true)
       this.$refs["my-table"].onCheckboxClicked(event.row,event.rowIndex,event)
      },
+    GenerateWorkingPlan(){
+      this.saveData()
+let exceldata=JSON.parse(JSON.stringify(this.$store.getters.getExcelRows))
+let jsondata=tools.Excel2JsonFormat(exceldata)
+console.log(this.$store.getters.getExcelRows)
+  console.log(jsondata)
+    },
     getCellClass(props){
      for(let day of this.weekdays){
         if(props.column.field===day){
               if(props.row[day]==="NW"){
           return "blueCell"
           }
-          else if(props.row[day]==="R"){
+          else if(props.row[day]==="RM"){
           return "cyanCell"
           }
             else if(props.row[day]==="SW"){

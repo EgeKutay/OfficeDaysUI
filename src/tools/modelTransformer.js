@@ -9,11 +9,11 @@ let employees=jsonmodel
 let mappedArr=employees.map((key)=>{
    
    let days={
-    monday: "R",
-    tuesday: "R",
-    wednesday: "R",
-    thursday: "R",
-    friday: "R",
+    monday: "RM",
+    tuesday: "RM",
+    wednesday: "RM",
+    thursday: "RM",
+    friday: "RM",
     }
   for( let dayType in key.offdays){
     if(dayType.length>0){
@@ -41,7 +41,7 @@ return mappedArr
 function Excel2JsonFormat(excelmodel){
     //this function will convert excel model to default config
     let mappedArr=excelmodel.map((key)=>{
-        offdays={nwdays:[],aldays:[],hrdays:[],uldays:[],swdays:[],mldays:[],phdays:[]}
+     let offdays={nwdays:[],aldays:[],hrdays:[],uldays:[],swdays:[],mldays:[],phdays:[]}
      key=getDaysObject(key)
         for(let day in key.offdays){
             for(let dkey in offdays){
@@ -64,7 +64,7 @@ function getDaysObject(empobj){
     
     let days=["monday","tuesday","wednesday","thursday","friday"]
     let offdays={}
-  for(key in empobj){
+  for(let key in empobj){
       if(days.includes(key)){
           offdays[key]=empobj[key]
       }
