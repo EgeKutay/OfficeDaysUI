@@ -81,7 +81,7 @@
             </span>
             <b-form-select
               v-model="pageLength"
-              :options="['5','10','20']"
+              :options="['5','10','20','50','100']"
               class="mx-1"
               @input="(value)=>props.perPageChanged({currentPerPage:value})"
             />
@@ -128,12 +128,13 @@ import {
 } from 'bootstrap-vue'
 
 import store from '@/store/index'
-let config = JSON.parse(JSON.stringify(require("@/localdb/config.json")))
 
-let employees=config["employees"]
+
+
 import employeeRows from "./EmployeeRows.vue"
 import employeeConfig from "./InitEmployees"
 import { findIndex, indexOf } from 'postcss-rtl/lib/affected-props'
+import appConfig from "@/appConfig"
 import tools from "@/tools/modelTransformer"
 
 export default {
@@ -151,14 +152,17 @@ export default {
     BDropdownItem,
     employeerows:employeeRows
   },
+  beforeDestroy(){
+    this.saveData()
+  },
   data() {
     return {
-       rowData:tools.Json2ExcelFormat(employees),
+    employees:[],
      employeeCell:[],
      dayCell:[],
       dayClicked:0,
-      weekdays:["monday","tuesday","wednesday","thursday","friday"],
-      dayTypes:["R","NW","SW","AL","UL","HR","ML","PH"],
+      weekdays:appConfig["weekdays"],
+      dayTypes:appConfig["dayTypes"],
       pageLength: 10,
       dir: false,
       columns: [
@@ -167,7 +171,7 @@ export default {
           field: 'id',
            filterOptions: {
             enabled: true,
-            placeholder: 'Search Date',
+            placeholder: 'Search Id',
           },
         },
         {
@@ -175,7 +179,7 @@ export default {
           field: 'name',
            filterOptions: {
             enabled: true,
-            placeholder: 'Search Date',
+            placeholder: 'Search Name',
           },
         },
         {
@@ -183,7 +187,7 @@ export default {
           field: 'monday',
            filterOptions: {
             enabled: true,
-            placeholder: 'Search Date',
+            placeholder: 'Search Type',
           },
         },
         {
@@ -191,7 +195,7 @@ export default {
           field: 'tuesday',
            filterOptions: {
             enabled: true,
-            placeholder: 'Search Date',
+            placeholder: 'Search Type',
           },
         },
         {
@@ -199,7 +203,7 @@ export default {
           field: 'wednesday',
            filterOptions: {
             enabled: true,
-            placeholder: 'Search Date',
+            placeholder: 'Search Type',
           },
         },
         {
@@ -207,7 +211,7 @@ export default {
           field: 'thursday',
            filterOptions: {
             enabled: true,
-            placeholder: 'Search Date',
+            placeholder: 'Search Type',
           },
         },
         {
@@ -215,7 +219,7 @@ export default {
           field:'friday',
            filterOptions: {
             enabled: true,
-            placeholder: 'Search Date',
+            placeholder: 'Search Type',
           },
         },
         {
@@ -223,7 +227,7 @@ export default {
           field:'nwdaycount',
            filterOptions: {
             enabled: true,
-            placeholder: 'Search Date',
+            placeholder: 'Search Count',
           },
         }
       ],
@@ -272,11 +276,19 @@ export default {
     },
   },
   created(){
-    this.$store.dispatch("updateExcelRows",this.rowData)
+   if(this.$store.getters.getExcelRows<1){
+  let config = JSON.parse(JSON.stringify(require("@/localdb/config.json")))
+this.employees=tools.Json2ExcelFormat(config["employees"])
+  this.$store.dispatch("updateExcelRows",this.employees)
+
+   }
+   console.log(this.$store.getters.getExcelRows)
+    this.rows = this.$store.getters.getExcelRows
+   
     
-     this.rows = this.$store.getters.getExcelRows
      
-     for( let employee of employees){
+     for( let employee of this.rows){
+       employee.vgtSelected=false //reset select boxes
        //this is needed to keep track for cells clicked by user
        this.employeeCell.push({
          id:employee.id,
@@ -324,11 +336,12 @@ export default {
        let rowIndex=this.rows.findIndex((object)=>{
          return row.id===object.id
        })
-       this.rows[rowIndex][this.weekdays[dayIndex]]=this.dayTypes[this.employeeCell[findIndex].days[this.weekdays[dayIndex]]]
-
-       //row[event.column.field]=this.dayTypes[this.employeeCell[findIndex].days[this.weekdays[dayIndex]]]
+      // this.rows[rowIndex][this.weekdays[dayIndex]]=this.dayTypes[this.employeeCell[findIndex].days[this.weekdays[dayIndex]]]
+      this.$store.dispatch("updateChangedExcelRow",row)
+       row[event.column.field]=this.dayTypes[this.employeeCell[findIndex].days[this.weekdays[dayIndex]]]
       
      }
+    
 
   },
       changeCellDayType(event){
@@ -345,33 +358,39 @@ export default {
            if( this.employeeCell[findIndex].days[day]>=this.dayTypes.length){
                 this.employeeCell[findIndex].days[day]=0
             }
+            this.$store.dispatch("updateChangedExcelRow",event.row)
             event.row[day]=this.dayTypes[this.employeeCell[findIndex].days[day]]
-            this.$store.dispatch("updateChangedExcelRows")
-            this.rows[rowIndex][day]=this.dayTypes[this.employeeCell[findIndex].days[day]]
-
-
-           
-            
+            //this.rows[rowIndex][day]=this.dayTypes[this.employeeCell[findIndex].days[day]]
           }
         }
       },
      changeNWDayCount(event){
        event.row.nwdaycount++
+       this.$store.dispatch("updateChangedExcelRow",event.row)
        if(event.row.nwdaycount>5){
          event.row.nwdaycount=0
        }
      },
      saveData(event){
-       console.log(event)
+      let empRows=this.$store.getters.getExcelRows
+      let changedEmpRows=this.$store.getters.getChangedExcelRows
+    
+      for(let changedRow of changedEmpRows){
+        let index=empRows.findIndex((object)=>{
+          return object.id===changedRow.id
+        }
+        )
+        empRows[index]=changedRow
+      }
+      this.$store.dispatch("updateExcelRows",empRows)
+   
+      this.rows=JSON.parse(JSON.stringify(this.$store.getters.getExcelRows))
+    
 
      },
      selectRow(event){
-     
-      
- 
     // this.$set(event.row,'vgtSelected',true)
       this.$refs["my-table"].onCheckboxClicked(event.row,event.rowIndex,event)
- 
      },
     getCellClass(props){
      for(let day of this.weekdays){
@@ -404,6 +423,7 @@ export default {
         }
       }
     },
+ 
   },
     
    
@@ -442,7 +462,7 @@ export default {
   padding: 0.0rem;
 }
 .yellowCell{
-  background: rgb(255, 255, 0);
+  background: rgb(220, 220, 0);
   color: white;
   position: absolute;
   left: -0.75rem;

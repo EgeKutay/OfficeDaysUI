@@ -7,5 +7,7 @@
             "loginViaRefreshTokenEndPoint":"https://sf.eldor.com.tr/AuthService/api/Auth/LoginWithRefreshToken"
 
 
-    }
+    },
+    "weekdays":["monday","tuesday","wednesday","thursday","friday"],
+    "dayTypes":["R","NW","SW","AL","UL","HR","ML","PH"]
 }
