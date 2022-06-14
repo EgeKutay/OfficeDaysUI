@@ -70,7 +70,7 @@ const router = new VueRouter({
        {//ADMINPANEL MAIN COMPONENT
         path: '/working-plan',
         name: 'working-plan',
-        component: () => import('@/views/adminpanel/AdminPanel.vue'),
+        component: () => import('@/views/employeepanel/EmployeePanel.vue'),
         meta: {
           pageTitle: 'Working Plan',
           breadcrumb: [

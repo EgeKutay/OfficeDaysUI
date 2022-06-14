@@ -1,30 +1,30 @@
 {
   "employees": [
   {"id":20001,"name":"GOKHAN BINGOL","nwdaycount":5,"offdays":{"nwdays":[],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
-  {"id":20015,"name":"ONUR ERDEN","nwdaycount":3,"offdays":{"nwdays":["Monday"],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
-  {"id":20016,"name":"UYGAR ZUBARI","nwdaycount":3,"offdays":{"nwdays":["Monday"],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
-  {"id":20017,"name":"OZGUR SELMANOGLU","nwdaycount":3,"offdays":{"nwdays":["Monday"],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
-  {"id":20018,"name":"MENGUÇ HALIL","nwdaycount":3,"offdays":{"nwdays":["Monday"],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
+  {"id":20015,"name":"ONUR ERDEN","nwdaycount":3,"offdays":{"nwdays":["monday"],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
+  {"id":20016,"name":"UYGAR ZUBARI","nwdaycount":3,"offdays":{"nwdays":["monday"],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
+  {"id":20017,"name":"OZGUR SELMANOGLU","nwdaycount":3,"offdays":{"nwdays":["monday"],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
+  {"id":20018,"name":"MENGUÇ HALIL","nwdaycount":3,"offdays":{"nwdays":["monday"],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
   {"id":20019,"name":"ILKNUR KURBAN","nwdaycount":2,"offdays":{"nwdays":[],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
-  {"id":20020,"name":"VOLKAN BALIKCI","nwdaycount":3,"offdays":{"nwdays":["Monday","Tuesday","Wednesday"],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
-  {"id":20021,"name":"TAHA ERKAN","nwdaycount":2,"offdays":{"nwdays":[],"aldays":[],"hrdays":[],"uldays":[],"swdays":["Wednesday"],"mldays":[],"phdays":[]}},
-  {"id":20022,"name":"OZGU TURKMEN","nwdaycount":2,"offdays":{"nwdays":["Thursday"],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
+  {"id":20020,"name":"VOLKAN BALIKCI","nwdaycount":3,"offdays":{"nwdays":[],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
+  {"id":20021,"name":"TAHA ERKAN","nwdaycount":2,"offdays":{"nwdays":[],"aldays":[],"hrdays":[],"uldays":[],"swdays":["wednesday"],"mldays":[],"phdays":[]}},
+  {"id":20022,"name":"OZGU TURKMEN","nwdaycount":2,"offdays":{"nwdays":[],"aldays":[],"hrdays":["thursday"],"uldays":[],"swdays":["wednesday"],"mldays":[],"phdays":[]}},
   {"id":20023,"name":"ENDER YURDAKOC","nwdaycount":2,"offdays":{"nwdays":[],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
-  {"id":20024,"name":"NILDEN TUTALAR","nwdaycount":2,"offdays":{"nwdays":["Thursday"],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
+  {"id":20024,"name":"NILDEN TUTALAR","nwdaycount":2,"offdays":{"nwdays":["monday","tuesday"],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
   {"id":20027,"name":"UGUR CAN","nwdaycount":2,"offdays":{"nwdays":[],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
   {"id":20029,"name":"ZAFER GULER","nwdaycount":2,"offdays":{"nwdays":[],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
   {"id":20030,"name":"CAN UGURLU","nwdaycount":2,"offdays":{"nwdays":[],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
   {"id":20031,"name":"ALI EMRE OK","nwdaycount":2,"offdays":{"nwdays":[],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
-  {"id":20035,"name":"GURKAN GUNEY","nwdaycount":2,"offdays":{"nwdays":["Thursday"],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
+  {"id":20035,"name":"GURKAN GUNEY","nwdaycount":2,"offdays":{"nwdays":["monday","tuesday"],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
   {"id":20047,"name":"OZGUR SALGINCI","nwdaycount":2,"offdays":{"nwdays":[],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
   {"id":20062,"name":"GAMZE AKYOL","nwdaycount":2,"offdays":{"nwdays":[],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}},
   {"id":16000287,"name":"EGE KUTAY YURUSEN","nwdaycount":5,"offdays":{"nwdays":[],"aldays":[],"hrdays":[],"uldays":[],"swdays":[],"mldays":[],"phdays":[]}}],
   "days": [
-{ "day": "Monday", "employeeCount": 20},
-{ "day": "Tuesday", "employeeCount": 20 },
-{ "day": "Wednesday", "employeeCount": 20},
-{ "day": "Thursday", "employeeCount": 20},
-{ "day": "Friday", "employeeCount": 20 }
+{ "day": "monday", "employeeCount": 12},
+{ "day": "tuesday", "employeeCount": 12 },
+{ "day": "wednesday", "employeeCount": 12},
+{ "day": "thursday", "employeeCount": 12},
+{ "day": "friday", "employeeCount": 12 }
   ],
-  "balanceFactor":2
+  "balanceFactor":-1
 }

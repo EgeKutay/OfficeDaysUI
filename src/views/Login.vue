@@ -210,8 +210,9 @@ export default {
   },
   methods: {
     validationForm() {
+   
       this.$refs.loginValidation.validate().then(response => {
-        console.log(response)
+      
         if (response) {
           this.$toast({
             component: ToastificationContent,
@@ -223,11 +224,12 @@ export default {
           })
         }
        this.$store.dispatch('login',{username:this.userName,password:this.password}).then(loginResponse=>{
-         console.log(loginResponse)
+        
          if(loginResponse){
            this.$toast({
             component: ToastificationContent,
             props: {
+              
               title: 'Login Success!',
               icon: 'EditIcon',
               variant: 'success',

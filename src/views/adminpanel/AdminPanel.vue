@@ -78,9 +78,7 @@
         slot-scope="props"
       >
         <div class="d-flex justify-content-between flex-wrap">
-           <b-row>
-             hello
-           </b-row>
+          
           <div class="d-flex align-items-center mb-0 mt-1">
             <span class="text-nowrap ">
               Showing 1 to
@@ -139,14 +137,17 @@ import store from '@/store/index'
 
 
 import tableConfig from "./tableConfig.js"
-import employeeRows from "./EmployeeRows.vue"
+
 import employeeConfig from "./InitEmployees"
 import { findIndex, indexOf } from 'postcss-rtl/lib/affected-props'
 import appConfig from "@/appConfig"
 import tools from "@/tools/modelTransformer"
+import workingPlan from "@/tools/workingPlanGenerator"
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
 export default {
   components: {
+    ToastificationContent,
     BRow,
     BCol,
     BAvatar,
@@ -160,7 +161,7 @@ export default {
     BCardBody,
     BDropdown,
     BDropdownItem,
-    employeerows:employeeRows
+    
   },
   beforeDestroy(){
     this.saveData()
@@ -233,8 +234,6 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
            if(this.employeeCell[findIndex].days[this.weekdays[dayIndex]]>=this.dayTypes.length){
               this.employeeCell[findIndex].days[this.weekdays[dayIndex]]=0
            }
-           console.log(this.employeeCell[findIndex].days[this.weekdays[dayIndex]])
-           console.log(this.dayTypes[this.employeeCell[findIndex].days[this.weekdays[dayIndex]]])
      for(let row of rows){
        let rowIndex=this.rows.findIndex((object)=>{
          return row.id===object.id
@@ -295,12 +294,40 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
     // this.$set(event.row,'vgtSelected',true)
       this.$refs["my-table"].onCheckboxClicked(event.row,event.rowIndex,event)
      },
-    GenerateWorkingPlan(){
+  async GenerateWorkingPlan(){
       this.saveData()
 let exceldata=JSON.parse(JSON.stringify(this.$store.getters.getExcelRows))
 let jsondata=tools.Excel2JsonFormat(exceldata)
-console.log(this.$store.getters.getExcelRows)
-  console.log(jsondata)
+let response
+for(let tryCount=0;tryCount<999;tryCount++){
+  response= await workingPlan.generateWorkPlan(jsondata)
+ if(response){
+   break;
+ }
+ console.log(tryCount)
+}
+if(!response){
+    this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Failed to generated the office working plan...',
+              icon: 'EditIcon',
+              variant: 'danger',
+            },
+          })
+}
+else{
+    this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Successfully generated the office working plan',
+              icon: 'EditIcon',
+              variant: 'success',
+            },
+          })
+}
+console.log(response)
+
     },
     getCellClass(props){
      for(let day of this.weekdays){
