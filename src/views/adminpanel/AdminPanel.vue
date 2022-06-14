@@ -26,6 +26,7 @@
     ref="my-table"
       :columns="columns"
       :rows="rows"
+      
      @on-page-change="saveData"
      @on-per-page-changed="saveData"
      @on-cell-click="onCellClick"
@@ -276,8 +277,8 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
      saveData(event){
       let empRows=this.$store.getters.getExcelRows
       let changedEmpRows=this.$store.getters.getChangedExcelRows
-    
       for(let changedRow of changedEmpRows){
+        
         let index=empRows.findIndex((object)=>{
           return object.id===changedRow.id
         }
@@ -295,38 +296,38 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
       this.$refs["my-table"].onCheckboxClicked(event.row,event.rowIndex,event)
      },
   async GenerateWorkingPlan(){
-      this.saveData()
-let exceldata=JSON.parse(JSON.stringify(this.$store.getters.getExcelRows))
-let jsondata=tools.Excel2JsonFormat(exceldata)
-let response
-for(let tryCount=0;tryCount<1999;tryCount++){
-  response= await workingPlan.generateWorkPlan(jsondata)
- if(response){
-   break;
- }
- console.log(tryCount)
-}
-if(!response){
-    this.$toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Failed to generate the office working plan...',
-              icon: 'EditIcon',
-              variant: 'danger',
-            },
-          })
-}
-else{
-    this.$toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Successfully generated the office working plan',
-              icon: 'EditIcon',
-              variant: 'success',
-            },
-          })
-    this.$store.dispatch("updateWorkingPlan",response)
-     this.$router.replace({name:"working-plan"})
+        this.saveData()
+  let exceldata=JSON.parse(JSON.stringify(this.$store.getters.getExcelRows))
+  let jsondata=tools.Excel2JsonFormat(exceldata)
+  let response
+  for(let tryCount=0;tryCount<1999;tryCount++){
+    response= await workingPlan.generateWorkPlan(jsondata)
+  if(response){
+    break;
+  }
+  console.log(tryCount)
+  }
+  if(!response){
+      this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: 'Failed to generate the office working plan...',
+                icon: 'EditIcon',
+                variant: 'danger',
+              },
+    })
+  }
+  else{
+      this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: 'Successfully generated the office working plan',
+                icon: 'EditIcon',
+                variant: 'success',
+              },
+            })
+      this.$store.dispatch("updateWorkingPlan",response)
+      this.$router.replace({name:"working-plan"})
 }
 
 
