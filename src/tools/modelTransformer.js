@@ -35,6 +35,46 @@ let mappedArr=employees.map((key)=>{
 
 return mappedArr
 }
+/**@param jsonmodel
+ *
+ * */
+function Json2ExcelWorkingPlan(jsonmodel){
+    //excel format means the data model is ready to exported to excel
+//this function will convert default config file to excel
+ 
+let employees=jsonmodel
+
+let mappedArr=employees.map((key)=>{
+   
+   let days={
+    monday: "SW",
+    tuesday: "SW",
+    wednesday: "SW",
+    thursday: "SW",
+    friday: "SW",
+    }
+  for( let dayType in key.offdays){
+    if(dayType.length>0){
+         for(let day of key.offdays[dayType]){
+            days[day.toLowerCase()]=dayType.substring(0,2).toUpperCase()
+        }
+    }
+  }
+    return {
+        id:key.id,
+        name:key.name,
+        nwdaycount:key.nwdaycount,
+        ...days
+    }
+
+})
+
+
+
+return mappedArr
+    
+
+}
 /**@param excelmodel
  *
  * */
@@ -79,6 +119,7 @@ function getDaysObject(empobj){
 export default{
     Json2ExcelFormat,
     Excel2JsonFormat,
-    getDaysObject
+   
+    Json2ExcelWorkingPlan
 
 }

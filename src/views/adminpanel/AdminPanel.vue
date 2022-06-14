@@ -299,7 +299,7 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
 let exceldata=JSON.parse(JSON.stringify(this.$store.getters.getExcelRows))
 let jsondata=tools.Excel2JsonFormat(exceldata)
 let response
-for(let tryCount=0;tryCount<999;tryCount++){
+for(let tryCount=0;tryCount<1999;tryCount++){
   response= await workingPlan.generateWorkPlan(jsondata)
  if(response){
    break;
@@ -310,7 +310,7 @@ if(!response){
     this.$toast({
             component: ToastificationContent,
             props: {
-              title: 'Failed to generated the office working plan...',
+              title: 'Failed to generate the office working plan...',
               icon: 'EditIcon',
               variant: 'danger',
             },
@@ -325,8 +325,10 @@ else{
               variant: 'success',
             },
           })
+    this.$store.dispatch("updateWorkingPlan",response)
+     this.$router.replace({name:"working-plan"})
 }
-console.log(response)
+
 
     },
     getCellClass(props){
