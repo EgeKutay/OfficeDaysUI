@@ -1,8 +1,8 @@
 
 const ExcelJS = require('exceljs');
 //rows
-const officeDayArr=require("./lib/core")
-function ExportFile(officeDayArr){
+
+async function ExportFile(officeDayArr){
 let currentdate = new Date();
 let oneJan = new Date(currentdate.getFullYear(),0,1);
 let numberOfDays = Math.floor((currentdate - oneJan) / (24 * 60 * 60 * 1000));
@@ -26,13 +26,13 @@ let weekDays=dates(currentdate)
 const workbook = new ExcelJS.Workbook();
 const worksheet = workbook.addWorksheet('My Sheet');
 worksheet.columns=[
-    {header: "Id",key: "Id"},
-    {header:"Name",key:"Name"},
-    {header:`${weekDays[0].getDate()} Monday`,key:"Monday"},
-    {header:`${weekDays[1].getDate()} Tuesday`,key:"Tuesday"},
-    {header:`${weekDays[2].getDate()} Wednesday`,key:"Wednesday"},
-    {header:`${weekDays[3].getDate()} Thursday`,key:"Thursday"},
-    {header:`${weekDays[4].getDate()} Friday`,key:"Friday"},
+    {header: "Id",key: "id"},
+    {header:"Name",key:"name"},
+    {header:`${weekDays[0].getDate()} Monday`,key:"monday"},
+    {header:`${weekDays[1].getDate()} Tuesday`,key:"tuesday"},
+    {header:`${weekDays[2].getDate()} Wednesday`,key:"wednesday"},
+    {header:`${weekDays[3].getDate()} Thursday`,key:"thursday"},
+    {header:`${weekDays[4].getDate()} Friday`,key:"friday"},
     {header:`Office Days Count`,key:"none"},
 ]
 let row;
@@ -154,7 +154,10 @@ function setSolidColor(color){
   };
 }
 
-workbook.xlsx.writeFile(`SF_Working_Plan${result}_Plan.xlsx`);
+const buffer = await workbook.xlsx.writeBuffer();
+
+return buffer
+
 }
 export default{
     ExportFile

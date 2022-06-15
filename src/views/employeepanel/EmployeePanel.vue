@@ -3,7 +3,7 @@
   <div>
     <!-- search input -->
     <b-card>
-    <b-button variant="primary">Download Plan as Excel</b-button>
+    <b-button variant="primary" @click="DownloadExcel">Download Plan as Excel</b-button>
     <b-card-body>
     <div class="custom-search d-flex justify-content-end">
       <b-form-group>
@@ -135,6 +135,7 @@ import tableConfig from "./tableConfig.js"
 import { findIndex, indexOf } from 'postcss-rtl/lib/affected-props'
 import appConfig from "@/appConfig"
 import tools from "@/tools/modelTransformer"
+import excelExport from "@/tools/Json2Excel"
 
 export default {
   components: {
@@ -238,7 +239,6 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
 
   },
       changeCellDayType(event){
-        
         for(let day of this.weekdays){
           if(event.column.field === day){
             let rowIndex=this.rows.findIndex((object)=>{
@@ -265,8 +265,6 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
        }
      },
      saveData(event){
-       
-       
       let empRows=this.$store.getters.getWorkingPlan
       let changedEmpRows=this.$store.getters.getChangedWorkingPlan
     
@@ -280,8 +278,6 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
       this.$store.dispatch("updateWorkingPlan",empRows)
    
       this.rows=JSON.parse(JSON.stringify(this.$store.getters.getWorkingPlan))
-    
-
      },
      selectRow(event){
     // this.$set(event.row,'vgtSelected',true)
@@ -318,6 +314,19 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
         }
       }
     },
+   async DownloadExcel(){
+     let data= JSON.parse(JSON.stringify(this.$store.getters.getWorkingPlan))
+     console.log(JSON.stringify(data))
+      let bufferObj=await excelExport.ExportFile(data)
+const blob = new Blob([bufferObj],{type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,"}
+);
+// Programatically create a link and click it:
+var a = document.createElement("a");
+a.href = URL.createObjectURL(blob);
+a.download = "WorkingPlan.xlsx";
+a.click();
+
+    }
  
   },
     

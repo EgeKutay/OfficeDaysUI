@@ -119,7 +119,6 @@ function getDaysObject(empobj){
 export default{
     Json2ExcelFormat,
     Excel2JsonFormat,
-   
     Json2ExcelWorkingPlan
 
 }
