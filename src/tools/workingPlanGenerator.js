@@ -1,7 +1,6 @@
 const data = {...require("@/localdb/config.json")};
 import tools from "./modelTransformer"
-let tryCount=0;
-const TRYCOUNTMAX=100
+
 let employeeDatas=[]
 async function generateWorkPlan(employeeData){
   
@@ -92,6 +91,7 @@ try {
     }
   }
 } catch (err) {
+  
 
     return 0
 }
@@ -135,7 +135,10 @@ try {
         emp.nwdaycount--
       let findIndex = findDayIndex(days.map(dayName=>(dayName.day)),emp.availableNWdays[avalabledayindex])
         emp.availableNWdays.splice(avalabledayindex,1)
+        
         days[findIndex].employeeCount--
+        
+        
         if(days[findIndex].employeeCount<1){
           days.splice(findIndex,1)
         }
@@ -151,6 +154,7 @@ try {
    
   }
 } catch (err) {
+  console.log(err)
     return 0
 }
 

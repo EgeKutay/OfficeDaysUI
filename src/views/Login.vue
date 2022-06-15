@@ -224,18 +224,6 @@ export default {
           })
         }
        this.$store.dispatch('login',{username:this.userName,password:this.password}).then(loginResponse=>{
-        
-         if(loginResponse){
-           this.$toast({
-            component: ToastificationContent,
-            props: {
-              
-              title: 'Login Success!',
-              icon: 'EditIcon',
-              variant: 'success',
-            },
-          });
-       }
          this.$router.replace({name:"home"})
        },(rejection)=>{
        

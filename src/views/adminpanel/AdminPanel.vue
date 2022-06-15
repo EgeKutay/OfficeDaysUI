@@ -33,7 +33,7 @@
      @on-sort-change="saveData"
      @filter-changed="saveData"
      @on-column-filter="saveData"
-   
+  
       :search-options="{
         enabled: true,
         externalQuery: searchTerm }"
@@ -58,11 +58,8 @@
        <span class="wrap" >
           <span :class="getCellClass(props)"  >
             <br>
-
              {{props.row[day]}}
-      
           </span>
-          
         </span> 
       </span>
             </div>
@@ -232,7 +229,7 @@ import store from '@/store/index'
 
 import tableConfig from "./tableConfig.js"
 
-import employeeConfig from "./InitEmployees"
+
 import { findIndex, indexOf } from 'postcss-rtl/lib/affected-props'
 import appConfig from "@/appConfig"
 import tools from "@/tools/modelTransformer"
@@ -297,18 +294,44 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
      }
   },
   methods:{
+    createToast(title,variant)
+    {
+      this.$toast(
+      {
+        component: ToastificationContent,
+        props: {
+          title: title,
+          icon: 'EditIcon',
+          variant: variant,
+        },
+      })
+    },
+    adjustChange(eventRow)
+    {
+      let count=0;
+      for(let day of JSON.parse(JSON.stringify(this.weekdays))){
+      if(eventRow[day]==='NW'||eventRow[day]==='RM'){
+        count++
+      }
+      }
+      if(count<eventRow.nwdaycount){
+      eventRow.nwdaycount=count
+      this.$store.dispatch("updateChangedExcelRow",eventRow)
+      this.createToast(`INFO: Automatically adjusted the normal work day count for ${eventRow.name}`,'info')
+      }
+    },
     validateChange(event){
       let employees=this.$store.getters.getExcelRows
      
      let empIndex=employees.findIndex((object)=>{
        return object.id==event.row.id
      })
-
+return true
     },
     onCellClick(event){
-    /*if(!this.validateChange(event)){
-    return
-    }*/
+   
+ 
+    
     if(this.weekdays.includes(event.column.field)){
       if(this.$refs["my-table"].selectedRows.length>0){
          if(!this.$refs["my-table"].selectedRows.includes(event.row)){
@@ -330,6 +353,9 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
     else{
       this.selectRow(event)
     }
+       
+   this.validateChange(event)
+   this.adjustChange(event.row)
   },
     changeSelectedCells(rows,event){
           let findIndex=this.employeeCell.findIndex((object)=>{
@@ -341,12 +367,10 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
               this.employeeCell[findIndex].days[this.weekdays[dayIndex]]=0
            }
      for(let row of rows){
-       let rowIndex=this.rows.findIndex((object)=>{
-         return row.id===object.id
-       })
       // this.rows[rowIndex][this.weekdays[dayIndex]]=this.dayTypes[this.employeeCell[findIndex].days[this.weekdays[dayIndex]]]
       this.$store.dispatch("updateChangedExcelRow",row)
        row[event.column.field]=this.dayTypes[this.employeeCell[findIndex].days[this.weekdays[dayIndex]]]
+        this.adjustChange(row)
       
      }
     
@@ -410,24 +434,10 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
   console.log(tryCount)
   }
   if(!response){
-      this.$toast({
-              component: ToastificationContent,
-              props: {
-                title: 'Failed to generate the office working plan...',
-                icon: 'EditIcon',
-                variant: 'danger',
-              },
-    })
+    this.createToast('Failed to generate the office working plan...','danger')
   }
   else{
-      this.$toast({
-              component: ToastificationContent,
-              props: {
-                title: 'Successfully generated the office working plan',
-                icon: 'EditIcon',
-                variant: 'success',
-              },
-            })
+     this.createToast('Successfully generated the office working plan','success')
       this.$store.dispatch("updateWorkingPlan",response)
       this.$router.replace({name:"working-plan"})
 }

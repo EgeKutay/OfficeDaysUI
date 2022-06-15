@@ -1,6 +1,7 @@
 import dateFormatter from "@/tools/dateFormatter"
 let columns=[
     {
+     sortable:false,
       label: 'Id',
       field: 'id',
        filterOptions: {
@@ -57,6 +58,7 @@ let columns=[
       },
     },
     {
+      sortable:false,
       label:'Normal Work Day Count',
       field:'nwdaycount',
        filterOptions: {
