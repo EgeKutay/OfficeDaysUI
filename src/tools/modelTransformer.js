@@ -7,14 +7,25 @@ function Json2ExcelFormat(jsonmodel){
 let employees=jsonmodel
 
 let mappedArr=employees.map((key)=>{
-   
-   let days={
+    let days={}
+   if(key.nwdaycount<5){
+    days={
     monday: "RM",
     tuesday: "RM",
     wednesday: "RM",
     thursday: "RM",
     friday: "RM",
     }
+}else{
+
+    days={
+        monday: "NW",
+        tuesday: "NW",
+        wednesday: "NW",
+        thursday: "NW",
+        friday: "NW",
+        }
+}
   for( let dayType in key.offdays){
     if(dayType.length>0){
          for(let day of key.offdays[dayType]){

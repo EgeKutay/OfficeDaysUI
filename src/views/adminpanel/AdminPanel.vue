@@ -3,7 +3,7 @@
   <div>
     <!-- search input -->
     
-    <b-card>
+    <b-card :title="`Week ${weekCount} Working Plan`">
       
       
       
@@ -15,30 +15,30 @@
      
     <b-card-body>
       <b-row style="padding-bottom:50px">
-          <b-col style="font-size:140%" cols=2>
+          <b-col style="font-size:120%" cols=2>
     <span style="background-color:rgb(0, 200, 200);color:#FFFFFF">RM</span>: Random
         </b-col>
-        <b-col style="font-size:140%" cols=2>
+        <b-col style="font-size:120%" cols=2>
     <span style="background-color:rgb(136, 221, 255);margin-left:-20px;color:#FFFFFF;">NW</span>: Normal Working
         </b-col>
-          <b-col style="font-size:140%" cols=2>
+          <b-col style="font-size:120%" cols=2>
     <span style="background-color:rgb(210, 180, 220);margin-left:-20px;color:#FFFFFF;">SW</span>: Smart Working
           </b-col>
-            <b-col style="font-size:140%" cols=2>
+            <b-col style="font-size:120%" cols=2>
     <span style="background-color:rgb(220, 220, 0);margin-left:-20px;color:#FFFFFF;">AL</span>: Annual Leave
     </b-col>
       </b-row>
     <b-row>
-          <b-col style="font-size:140%" cols=2>
+          <b-col style="font-size:120%" cols=2>
     <span style="background-color:rgb(100, 0, 255);color:#FFFFFF;">UL</span>: Unpaid Leave
     </b-col>
-          <b-col style="font-size:140%" cols=2>
+          <b-col style="font-size:120%" cols=2>
     <span style="background-color:rgb(0, 194, 48);margin-left:-20px;color:#FFFFFF;">HR</span>: Health Report
     </b-col>
-          <b-col style="font-size:140%" cols=2>
+          <b-col style="font-size:120%" cols=2>
     <span style="background-color:rgb(255, 150, 0);margin-left:-20px;color:#FFFFFF;">ML</span>: Marriage Leave
     </b-col>
-          <b-col style="font-size:140%" cols=2>
+          <b-col style="font-size:120%" cols=2>
     <span style="background-color:rgb(255, 200, 0);margin-left:-20px;color:#FFFFFF;">PH</span>: Public Holiday
     </b-col>
       </b-row>
@@ -180,7 +180,7 @@
           id="basicInput"
           v-model="day.employeeCount"
           style="width:7vw"
-          @change="checkDaysFits"
+          @change="checkDaysFits(day)"
        
          
         />
@@ -261,7 +261,9 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
   this.$store.dispatch("updateExcelRows",this.employees)
    }
    console.log(this.$store.getters.getExcelRows)
+
     this.rows = this.$store.getters.getExcelRows
+  
      for( let employee of this.rows){
        employee.vgtSelected=false //reset select boxes
        //this is needed to keep track for cells clicked by user
@@ -272,7 +274,7 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
      }
   },
   methods:{
-    checkDaysFits(props){
+    checkDaysFits(column){
       let empsum=0;
       
       let daysum=0;
@@ -281,19 +283,26 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
      this.daysArr.forEach(row=>(daysum+=parseInt(row.employeeCount,10)))
      if(empsum>daysum){
       this.createToast("Warning not enough capacity to fit employees in days","warning")
+     
+      
      }
+    //check days rows meets requirements
+     
     
       
     },
     createToast(title,variant)
     {
+   
       this.$toast(
       {
+        timeout:false,
         component: ToastificationContent,
         props: {
           title: title,
           icon: 'EditIcon',
           variant: variant,
+        
         },
       })
     },
