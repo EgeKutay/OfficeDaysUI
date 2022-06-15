@@ -226,7 +226,6 @@ export default {
        this.$store.dispatch('login',{username:this.userName,password:this.password}).then(loginResponse=>{
          this.$router.replace({name:"home"})
        },(rejection)=>{
-       
            this.$toast({
             component: ToastificationContent,
             props: {

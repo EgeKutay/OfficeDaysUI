@@ -2,10 +2,47 @@
 <template>
   <div>
     <!-- search input -->
+    
     <b-card>
+      
+      
+      
     <b-button variant="primary" @click="GenerateWorkingPlan">Generate Working Plan</b-button>
     <b-button variant="success" style="margin-left:20px">Save Default</b-button>
+
+
+      
+     
     <b-card-body>
+      <b-row style="padding-bottom:50px">
+          <b-col style="font-size:140%" cols=2>
+    <span style="background-color:rgb(0, 200, 200);color:#FFFFFF">RM</span>: Random
+        </b-col>
+        <b-col style="font-size:140%" cols=2>
+    <span style="background-color:rgb(136, 221, 255);margin-left:-20px;color:#FFFFFF;">NW</span>: Normal Working
+        </b-col>
+          <b-col style="font-size:140%" cols=2>
+    <span style="background-color:rgb(210, 180, 220);margin-left:-20px;color:#FFFFFF;">SW</span>: Smart Working
+          </b-col>
+            <b-col style="font-size:140%" cols=2>
+    <span style="background-color:rgb(220, 220, 0);margin-left:-20px;color:#FFFFFF;">AL</span>: Annual Leave
+    </b-col>
+      </b-row>
+    <b-row>
+          <b-col style="font-size:140%" cols=2>
+    <span style="background-color:rgb(100, 0, 255);color:#FFFFFF;">UL</span>: Unpaid Leave
+    </b-col>
+          <b-col style="font-size:140%" cols=2>
+    <span style="background-color:rgb(0, 194, 48);margin-left:-20px;color:#FFFFFF;">HR</span>: Health Report
+    </b-col>
+          <b-col style="font-size:140%" cols=2>
+    <span style="background-color:rgb(255, 150, 0);margin-left:-20px;color:#FFFFFF;">ML</span>: Marriage Leave
+    </b-col>
+          <b-col style="font-size:140%" cols=2>
+    <span style="background-color:rgb(255, 200, 0);margin-left:-20px;color:#FFFFFF;">PH</span>: Public Holiday
+    </b-col>
+      </b-row>
+    
     <div class="custom-search d-flex justify-content-end">
       <b-form-group>
         <div class="d-flex align-items-center">
@@ -119,98 +156,38 @@
             </b-pagination>
           </div>
         </div>
-        <b-row>
-          <b-col
-      md="2"
-      xl="2"
+        <b-row style="margin-top:0px">
+          <b-col 
+      md="1"
+      xl="1"
       class="mb-1"
+      style="margin-left:15vw"
     >
           </b-col>
-              <b-col
-      md="1"
-      xl="1"
+    <b-col v-for="day in daysArr" 
+      md="1.5"
+      xl="1.5"
       class="mb-1"
+     style="padding-left:3vw"
     >
 
       <!-- basic -->
       <b-form-group
-        label="Basic Input"
-        label-for="basicInput"
+      :label="`${day.day[0].toUpperCase()+day.day.slice(1)}`"
+        
       >
         <b-form-input
           id="basicInput"
-          placeholder="Enter Email"
+          v-model="day.employeeCount"
+          style="width:7vw"
+          @change="checkDaysFits"
+       
+         
         />
       </b-form-group>
     </b-col>
-     <b-col
-      md="1"
-      xl="1"
-      class="mb-1"
-    >
-
-      <!-- basic -->
-      <b-form-group
-        label="Basic Input"
-        label-for="basicInput"
-      >
-        <b-form-input
-          id="basicInput"
-          placeholder="Enter Email"
-        />
-      </b-form-group>
-    </b-col>
-     <b-col
-      md="1"
-      xl="1"
-      class="mb-1"
-    >
-
-      <!-- basic -->
-      <b-form-group
-        label="Basic Input"
-        label-for="basicInput"
-      >
-        <b-form-input
-          id="basicInput"
-          placeholder="Enter Email"
-        />
-      </b-form-group>
-    </b-col>
-     <b-col
-      md="1"
-      xl="1"
-      class="mb-1"
-    >
-
-      <!-- basic -->
-      <b-form-group
-        label="Basic Input"
-        label-for="basicInput"
-      >
-        <b-form-input
-          id="basicInput"
-          placeholder="Enter Email"
-        />
-      </b-form-group>
-    </b-col>
-     <b-col
-      md="1"
-      xl="1"
-      class="mb-1"
-    >
-
-      <!-- basic -->
-      <b-form-group
-        label="Basic Input"
-        label-for="basicInput"
-      >
-        <b-form-input
-          id="basicInput"
-          placeholder="Enter Email"
-        />
-      </b-form-group>
-    </b-col>
+    
+    
         </b-row>
       </template>
     </vue-good-table>
@@ -229,7 +206,7 @@ import store from '@/store/index'
 
 import tableConfig from "./tableConfig.js"
 
-
+import localdb from "@/localdb/config"
 import { findIndex, indexOf } from 'postcss-rtl/lib/affected-props'
 import appConfig from "@/appConfig"
 import tools from "@/tools/modelTransformer"
@@ -259,6 +236,7 @@ export default {
   },
   data() {
     return {
+      daysArr:localdb["days"],
       weekCount:0,
     employees:[],
      employeeCell:[],
@@ -294,6 +272,19 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
      }
   },
   methods:{
+    checkDaysFits(props){
+      let empsum=0;
+      
+      let daysum=0;
+    
+      this.rows.forEach(row=>(empsum+=row.nwdaycount))
+     this.daysArr.forEach(row=>(daysum+=parseInt(row.employeeCount,10)))
+     if(empsum>daysum){
+      this.createToast("Warning not enough capacity to fit employees in days","warning")
+     }
+    
+      
+    },
     createToast(title,variant)
     {
       this.$toast(
@@ -489,7 +480,8 @@ return true
   display: inline-block;
  position: sticky;
   width:100%;
-    text-align:center
+    text-align:center;
+  
     
 }
 
@@ -542,6 +534,7 @@ return true
   top: -2.00rem;
   bottom: -2.8rem;
   padding: 0.0rem;
+  
 }
 .goldCell{
   background: rgb(255, 200, 0);
