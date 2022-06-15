@@ -122,6 +122,99 @@
             </b-pagination>
           </div>
         </div>
+        <b-row>
+          <b-col
+      md="2"
+      xl="2"
+      class="mb-1"
+    >
+          </b-col>
+              <b-col
+      md="1"
+      xl="1"
+      class="mb-1"
+    >
+
+      <!-- basic -->
+      <b-form-group
+        label="Basic Input"
+        label-for="basicInput"
+      >
+        <b-form-input
+          id="basicInput"
+          placeholder="Enter Email"
+        />
+      </b-form-group>
+    </b-col>
+     <b-col
+      md="1"
+      xl="1"
+      class="mb-1"
+    >
+
+      <!-- basic -->
+      <b-form-group
+        label="Basic Input"
+        label-for="basicInput"
+      >
+        <b-form-input
+          id="basicInput"
+          placeholder="Enter Email"
+        />
+      </b-form-group>
+    </b-col>
+     <b-col
+      md="1"
+      xl="1"
+      class="mb-1"
+    >
+
+      <!-- basic -->
+      <b-form-group
+        label="Basic Input"
+        label-for="basicInput"
+      >
+        <b-form-input
+          id="basicInput"
+          placeholder="Enter Email"
+        />
+      </b-form-group>
+    </b-col>
+     <b-col
+      md="1"
+      xl="1"
+      class="mb-1"
+    >
+
+      <!-- basic -->
+      <b-form-group
+        label="Basic Input"
+        label-for="basicInput"
+      >
+        <b-form-input
+          id="basicInput"
+          placeholder="Enter Email"
+        />
+      </b-form-group>
+    </b-col>
+     <b-col
+      md="1"
+      xl="1"
+      class="mb-1"
+    >
+
+      <!-- basic -->
+      <b-form-group
+        label="Basic Input"
+        label-for="basicInput"
+      >
+        <b-form-input
+          id="basicInput"
+          placeholder="Enter Email"
+        />
+      </b-form-group>
+    </b-col>
+        </b-row>
       </template>
     </vue-good-table>
     </b-card-body>
@@ -145,7 +238,7 @@ import appConfig from "@/appConfig"
 import tools from "@/tools/modelTransformer"
 import workingPlan from "@/tools/workingPlanGenerator"
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
-
+import dateFormatter from "@/tools/dateFormatter"
 export default {
   components: {
     ToastificationContent,
@@ -169,6 +262,7 @@ export default {
   },
   data() {
     return {
+      weekCount:0,
     employees:[],
      employeeCell:[],
      dayCell:[],
@@ -185,6 +279,7 @@ export default {
   computed: {
   },
   created(){
+    this.weekCount=dateFormatter.getNextWeekNumber()
    if(this.$store.getters.getExcelRows<1){
   let config = JSON.parse(JSON.stringify(require("@/localdb/config.json")))
 this.employees=tools.Json2ExcelFormat(config["employees"])
@@ -307,7 +402,7 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
   let exceldata=JSON.parse(JSON.stringify(this.$store.getters.getExcelRows))
   let jsondata=tools.Excel2JsonFormat(exceldata)
   let response
-  for(let tryCount=0;tryCount<1999;tryCount++){
+  for(let tryCount=0;tryCount<appConfig["tryCount"];tryCount++){
     response= await workingPlan.generateWorkPlan(jsondata)
   if(response){
     break;

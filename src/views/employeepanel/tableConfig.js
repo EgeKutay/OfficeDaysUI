@@ -1,3 +1,4 @@
+import dateFormatter from "@/tools/dateFormatter"
 let columns=[
     {
       label: 'Id',
@@ -16,7 +17,7 @@ let columns=[
       },
     },
     {
-      label: 'Monday',
+      label: `${dateFormatter.getDate(7)} Monday` ,
       field: 'monday',
        filterOptions: {
         enabled: true,
@@ -24,7 +25,7 @@ let columns=[
       },
     },
     {
-      label: 'Tuesday',
+      label: `${dateFormatter.getDate(8)} Tuesday` ,
       field: 'tuesday',
        filterOptions: {
         enabled: true,
@@ -32,7 +33,7 @@ let columns=[
       },
     },
     {
-      label: 'Wednesday',
+      label: `${dateFormatter.getDate(9)} Wednesday` ,
       field: 'wednesday',
        filterOptions: {
         enabled: true,
@@ -40,7 +41,7 @@ let columns=[
       },
     },
     {
-      label: 'Thursday',
+      label: `${dateFormatter.getDate(10)} Thursday` ,
       field: 'thursday',
        filterOptions: {
         enabled: true,
@@ -48,7 +49,7 @@ let columns=[
       },
     },
     {
-      label:'Friday',
+      label: `${dateFormatter.getDate(11)} Friday`,
       field:'friday',
        filterOptions: {
         enabled: true,

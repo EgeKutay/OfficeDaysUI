@@ -135,6 +135,7 @@ import tableConfig from "./tableConfig.js"
 import { findIndex, indexOf } from 'postcss-rtl/lib/affected-props'
 import appConfig from "@/appConfig"
 import tools from "@/tools/modelTransformer"
+import dateFormatter from "@/tools/dateFormatter"
 import excelExport from "@/tools/Json2Excel"
 
 export default {
@@ -315,6 +316,7 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
       }
     },
    async DownloadExcel(){
+    this.saveData()
      let data= JSON.parse(JSON.stringify(this.$store.getters.getWorkingPlan))
      console.log(JSON.stringify(data))
       let bufferObj=await excelExport.ExportFile(data)
@@ -323,7 +325,7 @@ const blob = new Blob([bufferObj],{type: "application/vnd.openxmlformats-officed
 // Programatically create a link and click it:
 var a = document.createElement("a");
 a.href = URL.createObjectURL(blob);
-a.download = "WorkingPlan.xlsx";
+a.download = `SF_Working_Plan${dateFormatter.getNextWeekNumber()}_Plan.xlsx`;
 a.click();
 
     }

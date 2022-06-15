@@ -1,5 +1,5 @@
 /**
- * @returns the next week number we will be in a year
+ * @returns the next week number
  */
 function getNextWeekNumber(){
 //returns the next week's number starting from October
@@ -19,13 +19,13 @@ function getDate(weekday){
     
     let currentdate=new Date()
     let datecontext= new Date(currentdate.getTime()+((weekday+1)*24*60*60*1000)-(currentdate.getDay()*24*60*60*1000))
-   console.log(datecontext.getDate())
-    return datecontext
+   
+    return datecontext.getDate()
 
 }
 /**
  * 
- * @returns week number
+ * @returns current week number
  */
 function getCurrentWeekNumber(){
     let date=new Date()
@@ -34,8 +34,8 @@ let weekNo=Math.round((date.getTime()-currentYear.getTime())/(1000*60*60*24*7))
 return weekNo
 
 }
-
-function getNextWeekDate(weekday){
+export default{
+    getNextWeekNumber,
+    getCurrentWeekNumber,
+    getDate,
 }
-
-console.log(getCurrentWeekNumber())

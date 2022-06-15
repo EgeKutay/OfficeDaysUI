@@ -1,38 +1,20 @@
 
 const ExcelJS = require('exceljs');
+import dateFormatter from './dateFormatter';
 //rows
 
 async function ExportFile(officeDayArr){
-let currentdate = new Date();
-let oneJan = new Date(currentdate.getFullYear(),0,1);
-let numberOfDays = Math.floor((currentdate - oneJan) / (24 * 60 * 60 * 1000));
-
-let result = Math.ceil(( currentdate.getDay() + 7 + numberOfDays) / 7);
-function dates(current) {
-  var week= new Array(); 
-  // Starting Monday not Sunday
-  current.setDate((current.getDate() - current.getDay() ));
-  for (var i = 0; i < 7; i++) {
-      week.push(
-          new Date(current)
-      ); 
-      current.setDate(current.getDate() );
-  }
-  return week; 
-}
-let weekDays=dates(currentdate)
-
 
 const workbook = new ExcelJS.Workbook();
 const worksheet = workbook.addWorksheet('My Sheet');
 worksheet.columns=[
     {header: "Id",key: "id"},
     {header:"Name",key:"name"},
-    {header:`${weekDays[0].getDate()} Monday`,key:"monday"},
-    {header:`${weekDays[1].getDate()} Tuesday`,key:"tuesday"},
-    {header:`${weekDays[2].getDate()} Wednesday`,key:"wednesday"},
-    {header:`${weekDays[3].getDate()} Thursday`,key:"thursday"},
-    {header:`${weekDays[4].getDate()} Friday`,key:"friday"},
+    {header:`${dateFormatter.getDate(7)} Monday`,key:"monday"},
+    {header:`${dateFormatter.getDate(8)} Tuesday`,key:"tuesday"},
+    {header:`${dateFormatter.getDate(9)} Wednesday`,key:"wednesday"},
+    {header:`${dateFormatter.getDate(10)} Thursday`,key:"thursday"},
+    {header:`${dateFormatter.getDate(11)} Friday`,key:"friday"},
     {header:`Office Days Count`,key:"none"},
 ]
 let row;
