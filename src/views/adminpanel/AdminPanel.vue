@@ -202,8 +202,18 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
      }
   },
   methods:{
-    onCellClick(event){
+    validateChange(event){
+      let employees=this.$store.getters.getExcelRows
      
+     let empIndex=employees.findIndex((object)=>{
+       return object.id==event.row.id
+     })
+
+    },
+    onCellClick(event){
+    /*if(!this.validateChange(event)){
+    return
+    }*/
     if(this.weekdays.includes(event.column.field)){
       if(this.$refs["my-table"].selectedRows.length>0){
          if(!this.$refs["my-table"].selectedRows.includes(event.row)){
@@ -286,10 +296,7 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
         empRows[index]=changedRow
       }
       this.$store.dispatch("updateExcelRows",empRows)
-   
       this.rows=JSON.parse(JSON.stringify(this.$store.getters.getExcelRows))
-    
-
      },
      selectRow(event){
     // this.$set(event.row,'vgtSelected',true)
