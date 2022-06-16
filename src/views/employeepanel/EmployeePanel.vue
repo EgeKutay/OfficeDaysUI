@@ -48,7 +48,7 @@
         enabled: true,
         perPage:pageLength
       }"
-     theme="nocturnal">
+    >
    
       <template slot="table-row" slot-scope="props" >
         <div v-for="day in weekdays"  >
