@@ -1,3 +1,6 @@
-# Vuexy - Vuejs, React, HTML & Laravel Admin Dashboard Template
+# ODM - Office Days Manager Program
 
-**Vuexy – Vuejs, React, HTML & Laravel Admin Dashboard Template** – is the most developer friendly & highly customizable Admin Dashboard Template based on Bootstrap 4, Bootstrap Vue & Reactstrap.
+
+# Edit & Add New Employee
+You can edit or add new employee from config file. It is located at src/localdb/config.json
+

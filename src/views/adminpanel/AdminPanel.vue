@@ -347,7 +347,7 @@ return true
       }
     }
     else if(event.column.field.toLowerCase()==="nwdaycount"){
-      this.changeNWDayCount(event)
+      this.changeNWDayCount(event.row)
     }
     else{
       this.selectRow(event)
@@ -395,11 +395,11 @@ return true
           }
         }
       },
-     changeNWDayCount(event){
-       event.row.nwdaycount++
-       this.$store.dispatch("updateChangedExcelRow",event.row)
-       if(event.row.nwdaycount>5){
-         event.row.nwdaycount=0
+     changeNWDayCount(row){
+     row.nwdaycount++
+       this.$store.dispatch("updateChangedExcelRow",row)
+       if(row.nwdaycount>5){
+         row.nwdaycount=0
        }
      },
      saveData(event){
