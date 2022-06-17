@@ -2,9 +2,10 @@
 <template>
   <div>
     <!-- search input -->
-    <b-card>
-    <b-button variant="primary" @click="DownloadExcel">Download Plan as Excel</b-button>
+   <b-card :title="`Week ${weekCount} Working Plan`">
+    
     <b-card-body>
+      <b-button variant="primary" @click="DownloadExcel">Download Plan as Excel</b-button>
     <div class="custom-search d-flex justify-content-end">
       <b-form-group>
         <div class="d-flex align-items-center">
@@ -31,7 +32,7 @@
      @on-sort-change="saveData"
      @filter-changed="saveData"
      @on-column-filter="saveData"
-   
+   theme="polar-bear"
       :search-options="{
         enabled: true,
         externalQuery: searchTerm }"
@@ -159,6 +160,7 @@ export default {
   },
   data() {
     return {
+    weekCount:0,
     employees:[],
      employeeCell:[],
      dayCell:[],
@@ -175,6 +177,7 @@ export default {
   computed: {
   },
   created(){
+      this.weekCount=dateFormatter.getNextWeekNumber()
    if(this.$store.getters.getWorkingPlan<1){
   let config = JSON.parse(JSON.stringify(require("@/localdb/config.json")))
 this.employees=tools.Json2ExcelFormat(config["employees"])

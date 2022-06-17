@@ -63,7 +63,7 @@
     ref="my-table"
       :columns="columns"
       :rows="rows"
-      
+     
      @on-page-change="saveData"
      @on-per-page-changed="saveData"
      @on-cell-click="onCellClick"
@@ -87,6 +87,7 @@
         enabled: true,
         perPage:pageLength
       }"
+     
      >
    
       <template slot="table-row" slot-scope="props" >
@@ -274,7 +275,7 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
      }
   },
   methods:{
-    checkDaysFits(column){
+    checkDaysFits(){
       let empsum=0;
       
       let daysum=0;
@@ -282,16 +283,15 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
       this.rows.forEach(row=>(empsum+=row.nwdaycount))
      this.daysArr.forEach(row=>(daysum+=parseInt(row.employeeCount,10)))
      if(empsum>daysum){
-      this.createToast("Warning not enough capacity to fit employees in days","warning")
-     
-      
+      this.createToast(`Warning not enough capacity to fit employees in days. Capacity required: ${empsum-daysum}`,"warning",15000)
      }
+
     //check days rows meets requirements
      
     
       
     },
-    createToast(title,variant)
+    createToast(title,variant,duration=5000)
     {
    
       this.$toast(
@@ -304,7 +304,8 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
           variant: variant,
         
         },
-      })
+      },
+      { timeout: duration })
     },
     adjustChange(eventRow)
     {
@@ -329,9 +330,7 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
 return true
     },
     onCellClick(event){
-   
- 
-    
+      //without selection boxes
     if(this.weekdays.includes(event.column.field)){
       if(this.$refs["my-table"].selectedRows.length>0){
          if(!this.$refs["my-table"].selectedRows.includes(event.row)){
@@ -353,11 +352,13 @@ return true
     else{
       this.selectRow(event)
     }
-       
+   this.checkDaysFits()    
    this.validateChange(event)
    this.adjustChange(event.row)
   },
     changeSelectedCells(rows,event){
+      //with selected boxes
+     
           let findIndex=this.employeeCell.findIndex((object)=>{
               return object.id===event.row.id
             })
@@ -373,8 +374,6 @@ return true
         this.adjustChange(row)
       
      }
-    
-
   },
       changeCellDayType(event){
         
@@ -426,18 +425,21 @@ return true
   let exceldata=JSON.parse(JSON.stringify(this.$store.getters.getExcelRows))
   let jsondata=tools.Excel2JsonFormat(exceldata)
   let response
+  let count=0
   for(let tryCount=0;tryCount<appConfig["tryCount"];tryCount++){
     response= await workingPlan.generateWorkPlan(jsondata)
+    count++
   if(response){
     break;
   }
-  console.log(tryCount)
+ 
   }
+   console.log(count)
   if(!response){
     this.createToast('Failed to generate the office working plan...','danger')
   }
   else{
-     this.createToast('Successfully generated the office working plan','success')
+     this.createToast(`Successfully generated the office working plan in ${count} ${(count>1)?"tries":"try"}`,'success')
       this.$store.dispatch("updateWorkingPlan",response)
       this.$router.replace({name:"working-plan"})
 }

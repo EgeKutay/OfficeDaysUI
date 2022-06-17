@@ -1,19 +1,19 @@
 <template>
   <div>
-    <b-card title="Kick start your project 🚀">
-      <b-card-text>All the best for your new project.</b-card-text>
-      <b-card-text>Please make sure to read our <b-link
-        href="https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/documentation/"
-        target="_blank"
-      >
-        Template Documentation
-      </b-link> to understand where to go from here and how to use our template.</b-card-text>
+    <b-card  style="border: 2px solid #9ABAFF;" title="Welcome to the Office Day Manager Application">
+      <b-card-text>Manage and create office working plan for hybrid working models in business. </b-card-text>
+      <b-card-text>You can manage or edit working plan from Working Plan section.</b-card-text>
     </b-card>
 
-    <b-card title="Want to integrate JWT? 🔒">
-      <b-card-text>We carefully crafted JWT flow so you can implement JWT with ease and with minimum efforts.</b-card-text>
-      <b-card-text>Please read our  JWT Documentation to get more out of JWT authentication.</b-card-text>
+    <b-card  style="border: 2px solid #BBA9FF;" title="Want to auto-generate office working plan?">
+      <b-card-text>Go to Admin Panel section configure employee(s) day type as you want then click on Generate Working Plan button.</b-card-text>
+      
     </b-card>
+     <b-card style="border: 2px solid #FFAAAA;" title="Having trouble to generate working plan?">
+      <b-card-text>Make sure the sum of employee normal working count doesn't exceed the sum of available weekday count.  </b-card-text>
+      <b-card-text>You can click on cells to manage the working plan of the employee(s) </b-card-text>
+    </b-card>
+
   </div>
 </template>
 

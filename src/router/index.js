@@ -36,10 +36,10 @@ const router = new VueRouter({
       name: 'second-page',
       component: () => import('@/views/SecondPage.vue'),
       meta: {
-        pageTitle: 'Second Page',
+        pageTitle: 'User Manual',
         breadcrumb: [
           {
-            text: 'Second Page',
+            text: 'User Manual',
             active: true,
           },
         ],
