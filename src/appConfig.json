@@ -8,5 +8,5 @@
     "weekdays":["monday","tuesday","wednesday","thursday","friday"],
     "dayTypes":["RM","NW","SW","AL","UL","HR","ML","PH"],
     "admins":[20001,20015,20017,16000287],
-    "tryCount":4999
+    "tryCount":1
 }

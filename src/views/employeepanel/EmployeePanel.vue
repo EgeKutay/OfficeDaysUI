@@ -3,9 +3,40 @@
   <div>
     <!-- search input -->
    <b-card :title="`Week ${weekCount} Working Plan`">
-    
+     <b-button variant="primary" @click="DownloadExcel">Download Plan as Excel</b-button>
     <b-card-body>
-      <b-button variant="primary" @click="DownloadExcel">Download Plan as Excel</b-button>
+     
+          <b-row style="padding-bottom:50px">
+          <b-col style="font-size:120%" cols=2>
+    <span style="background-color:rgb(0, 200, 200);color:#FFFFFF">RM</span>: Random
+        </b-col>
+        <b-col style="font-size:120%" cols=2>
+    <span style="background-color:rgb(136, 221, 255);margin-left:-20px;color:#FFFFFF;">NW</span>: Normal Working
+        </b-col>
+          <b-col style="font-size:120%" cols=2>
+    <span style="background-color:rgb(210, 180, 220);margin-left:-20px;color:#FFFFFF;">SW</span>: Smart Working
+          </b-col>
+            <b-col style="font-size:120%" cols=2>
+    <span style="background-color:rgb(220, 220, 0);margin-left:-20px;color:#FFFFFF;">AL</span>: Annual Leave
+    </b-col>
+      </b-row>
+      <br>
+    <b-row>
+          <b-col style="font-size:120%" cols=2>
+    <span style="background-color:rgb(100, 0, 255);color:#FFFFFF;">UL</span>: Unpaid Leave
+    </b-col>
+          <b-col style="font-size:120%" cols=2>
+    <span style="background-color:rgb(0, 194, 48);margin-left:-20px;color:#FFFFFF;">HR</span>: Health Report
+    </b-col>
+          <b-col style="font-size:120%" cols=2>
+    <span style="background-color:rgb(255, 150, 0);margin-left:-20px;color:#FFFFFF;">ML</span>: Marriage Leave
+    </b-col>
+          <b-col style="font-size:120%" cols=2>
+    <span style="background-color:rgb(255, 200, 0);margin-left:-20px;color:#FFFFFF;">PH</span>: Public Holiday
+    </b-col>
+      </b-row>
+   
+     
     <div class="custom-search d-flex justify-content-end">
       <b-form-group>
         <div class="d-flex align-items-center">
@@ -19,6 +50,7 @@
         </div>
       </b-form-group>
     </div>
+     
 
 
     <!-- table -->
@@ -127,7 +159,7 @@
 
 <script>
 import {
-  BAvatar, BBadge, BPagination, BFormGroup,BCard,BCardBody, BFormInput, BFormSelect, BDropdown, BDropdownItem,BButton
+  BAvatar,BRow,BCol, BBadge, BPagination, BFormGroup,BCard,BCardBody, BFormInput, BFormSelect, BDropdown, BDropdownItem,BButton
 } from 'bootstrap-vue'
 
 import store from '@/store/index'
@@ -141,7 +173,8 @@ import excelExport from "@/tools/Json2Excel"
 
 export default {
   components: {
-    
+    BRow,
+    BCol,
     BAvatar,
     BBadge,
     BButton,
@@ -205,11 +238,9 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
          else{
         this.changeSelectedCells(this.$refs["my-table"].selectedRows,event)
          }
-      
       }
       else{
       this.changeCellDayType(event)
-      
       }
     }
     else if(event.column.field.toLowerCase()==="nwdaycount"){
@@ -221,8 +252,7 @@ this.employees=tools.Json2ExcelFormat(config["employees"])
   },
     changeSelectedCells(rows,event){
           let findIndex=this.employeeCell.findIndex((object)=>{
-              return object.id===event.row.id
-            })
+              return object.id===event.row.id})
           let dayIndex = this.weekdays.findIndex((object)=>{return object===event.column.field})
            this.employeeCell[findIndex].days[this.weekdays[dayIndex]]++
            if(this.employeeCell[findIndex].days[this.weekdays[dayIndex]]>=this.dayTypes.length){

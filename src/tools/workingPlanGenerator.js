@@ -39,6 +39,7 @@ let offDaysList=["aldays","hrdays","mldays","swdays","uldays"]
 try {
   for(let emp of employees) {
     emp["availableNWdays"]=[]
+    console.log(emp)
   
   for(let weekday of days){
     emp.availableNWdays.push(JSON.parse(JSON.stringify(weekday.day)));
@@ -47,10 +48,13 @@ try {
     
       
      let findViableday=findDayIndex(emp.availableNWdays,emp.offdays.nwdays[nwday])
-
       let findday = days.findIndex((object) => {
+        console.log("----")
+        console.log(emp.offdays.nwdays[nwday])
+        console.log(object.day)
         return object.day == emp.offdays.nwdays[nwday];
       });
+      console.log(findday)
       emp.nwdaycount--;
       if(emp.nwdaycount<1){
         emp.availableNWdays=[]
@@ -91,8 +95,8 @@ try {
     }
   }
 } catch (err) {
-  
-
+ 
+  console.log(err)
     return 0
 }
 
@@ -154,7 +158,7 @@ try {
    
   }
 } catch (err) {
-  console.log(err)
+  
     return 0
 }
 
